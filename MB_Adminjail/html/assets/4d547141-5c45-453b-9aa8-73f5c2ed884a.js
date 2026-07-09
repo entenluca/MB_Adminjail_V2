@@ -400,23 +400,32 @@ function updateHud(data = {}) {
     const progress = Math.max(0, Math.min(100, (timeLeft / originalTime) * 100));
 
     els.hudTime.textContent = formatClock(timeLeft);
-    els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 40);
-    els.hudReason.textContent = String(data.reason || 'Kein Grund').slice(0, 60);
+    els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 28);
+    els.hudReason.textContent = String(data.reason || 'Kein Grund').slice(0, 28);
     els.hudProgress.style.width = `${progress}%`;
+}
+
+function setHudBackground(transparent) {
+    const value = transparent ? 'transparent' : '';
+    document.documentElement.style.background = value;
+    document.documentElement.style.backgroundColor = value;
+    document.body.style.background = value;
+    document.body.style.backgroundColor = value;
 }
 
 function showHud(data) {
     updateHud(data);
-    document.documentElement.style.background = 'transparent';
-    document.body.style.background = 'transparent';
-    document.body.style.backgroundColor = 'transparent';
+    setHudBackground(true);
+    document.documentElement.classList.add('hud-visible');
     document.body.classList.remove('visible');
     document.body.classList.add('hud-visible');
     els.hud.setAttribute('aria-hidden', 'false');
 }
 
 function hideHud() {
+    document.documentElement.classList.remove('hud-visible');
     document.body.classList.remove('hud-visible');
+    setHudBackground(true);
     els.hud.setAttribute('aria-hidden', 'true');
 }
 

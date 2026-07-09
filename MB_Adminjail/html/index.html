@@ -523,6 +523,12 @@ body.visible .app { display: flex; }
 }
 
 /* ---------- MB HUD Patch: transparenter Hintergrund + mittig ---------- */
+html, body {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+html.hud-visible,
 body.hud-visible {
     background: transparent !important;
     background-color: transparent !important;
@@ -538,7 +544,9 @@ body.hud-visible .hud {
 
 body.hud-visible .tablet,
 body.hud-visible .tablet-statusbar,
-body.hud-visible .tablet-side-buttons {
+body.hud-visible .tablet-side-buttons,
+body.hud-visible .modal-backdrop,
+body.hud-visible .toasts {
     display: none !important;
 }
 
@@ -1074,13 +1082,14 @@ body[data-theme="light"] .icon-sun { display: none; }
 body.hud-visible .hud { display: block; }
 
 .hud-card {
-    width: min(320px, 92vw);
+    width: min(480px, 94vw);
     background: rgba(10, 14, 20, 0.86);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 16px;
     padding: 14px 18px;
     color: #e9edf4;
-    backdrop-filter: blur(6px);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     box-shadow: 0 16px 44px rgba(0, 0, 0, 0.45);
     text-align: center;
 }
@@ -1111,27 +1120,42 @@ body.hud-visible .hud { display: block; }
 .hud-progress { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
 .hud-progress i { display: block; height: 100%; width: 100%; border-radius: 3px; background: var(--accent); transition: width 0.9s linear; }
 
-.hud-admin {
+.hud-meta {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 12px;
     margin-top: 10px;
-    font-size: 12.5px;
-    color: rgba(233, 237, 244, 0.7);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: center;
 }
-.hud-admin span { color: #e9edf4; font-weight: 600; }
 
-.hud-reason {
-    margin-top: 6px;
+.hud-meta-item {
+    flex: 1 1 0;
+    min-width: 0;
     font-size: 12.5px;
     color: rgba(233, 237, 244, 0.7);
+    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-align: center;
 }
-.hud-reason span { color: #e9edf4; font-weight: 600; }
+
+.hud-meta-item span { color: #e9edf4; font-weight: 600; }
+
+.hud-meta-divider {
+    width: 1px;
+    align-self: stretch;
+    background: rgba(255, 255, 255, 0.14);
+    flex: none;
+}
+
+@media (max-width: 520px) {
+    .hud-meta {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .hud-meta-divider { display: none; }
+}
 
 /* ---------- Responsive ---------- */
 
@@ -1392,8 +1416,11 @@ body.hud-visible .hud { display: block; }
             </div>
             <div id="hudTime" class="hud-time">--:--</div>
             <div class="hud-progress"><i id="hudProgress"></i></div>
-            <div class="hud-admin">Teamler: <span id="hudAdmin">–</span></div>
-            <div class="hud-reason">Grund: <span id="hudReason">–</span></div>
+            <div class="hud-meta">
+                <div class="hud-meta-item">Teamler: <span id="hudAdmin">–</span></div>
+                <span class="hud-meta-divider" aria-hidden="true"></span>
+                <div class="hud-meta-item">Grund: <span id="hudReason">–</span></div>
+            </div>
         </div>
     </section>
 
