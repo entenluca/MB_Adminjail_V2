@@ -177,6 +177,12 @@ local function getDisplayName(src)
     return GetPlayerName(src) or ('ID ' .. tostring(src))
 end
 
+local function getFiveMName(src)
+    src = tonumber(src)
+    if not src or src == 0 then return 'Console' end
+    return GetPlayerName(src) or getDisplayName(src)
+end
+
 local function notify(src, message, notifyType)
     if not src or tonumber(src) == 0 then
         print('[MB_Adminjail] ' .. message)
@@ -619,6 +625,7 @@ local function jailPlayer(target, adminSrc, minutes, reason)
     local releaseAt = os.time() + seconds
     local playerName = getDisplayName(target)
     local adminName = adminSrc == 0 and 'Console' or getDisplayName(adminSrc)
+    local adminFiveMName = getFiveMName(adminSrc)
     local adminIdentifier = adminSrc == 0 and 'console' or getIdentifier(adminSrc)
 
     dbExecute('UPDATE `mb_adminjail` SET `status` = "replaced", `released_by` = @released_by, `released_at` = CURRENT_TIMESTAMP WHERE `identifier` = @identifier AND `status` = "active"', {
@@ -630,7 +637,7 @@ local function jailPlayer(target, adminSrc, minutes, reason)
             ['@name'] = playerName,
             ['@reason'] = reason,
             ['@time_left'] = seconds,
-            ['@jailed_by'] = adminName,
+            ['@jailed_by'] = adminFiveMName,
             ['@jailed_by_identifier'] = adminIdentifier,
             ['@release_at'] = releaseAt
         }, function(insertId)
@@ -643,7 +650,7 @@ local function jailPlayer(target, adminSrc, minutes, reason)
                 originalTime = seconds,
                 releaseAt = releaseAt,
                 lastUpdated = os.time(),
-                jailedBy = adminName,
+                jailedBy = adminFiveMName,
                 jailedByIdentifier = adminIdentifier
             }
 
@@ -654,6 +661,7 @@ local function jailPlayer(target, adminSrc, minutes, reason)
                 timeLeft = seconds,
                 originalTime = seconds,
                 reason = reason,
+                jailedBy = adminFiveMName,
                 removeWeapons = Config.RemoveWeapons,
                 forceLeaveVehicle = Config.ForceLeaveVehicle,
                 freezePlayer = Config.FreezePlayer,
@@ -724,6 +732,7 @@ local function checkJailOnJoin(src)
             timeLeft = timeLeft,
             originalTime = timeLeft,
             reason = row.reason,
+            jailedBy = row.jailed_by or 'Unbekannt',
             removeWeapons = Config.RemoveWeapons,
             forceLeaveVehicle = Config.ForceLeaveVehicle,
             freezePlayer = Config.FreezePlayer,

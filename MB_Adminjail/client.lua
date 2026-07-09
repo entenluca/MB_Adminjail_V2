@@ -119,7 +119,8 @@ local function updateJailHud()
         action = 'updateJailHud',
         timeLeft = tonumber(jailData.timeLeft) or 0,
         originalTime = tonumber(jailData.originalTime) or tonumber(jailData.timeLeft) or 1,
-        reason = jailData.reason or 'Kein Grund'
+        reason = jailData.reason or 'Kein Grund',
+        jailedBy = jailData.jailedBy or 'Unbekannt'
     })
 end
 
@@ -130,7 +131,8 @@ local function showJailHud()
         action = 'showJailHud',
         timeLeft = tonumber(jailData.timeLeft) or 0,
         originalTime = tonumber(jailData.originalTime) or tonumber(jailData.timeLeft) or 1,
-        reason = jailData.reason or 'Kein Grund'
+        reason = jailData.reason or 'Kein Grund',
+        jailedBy = jailData.jailedBy or 'Unbekannt'
     })
 end
 

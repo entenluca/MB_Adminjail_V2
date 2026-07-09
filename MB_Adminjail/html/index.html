@@ -542,18 +542,6 @@ body.hud-visible .tablet-side-buttons {
     display: none !important;
 }
 
-.hud {
-    top: 24px !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) !important;
-}
-
-.hud-card {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
-
 
 .screen {
     width: 100%;
@@ -1074,23 +1062,33 @@ body[data-theme="light"] .icon-sun { display: none; }
 
 /* ---------- HUD ---------- */
 
-.hud { position: fixed; top: 24px; right: 24px; display: none; z-index: 40; }
+.hud {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    display: none;
+    z-index: 40;
+}
 body.hud-visible .hud { display: block; }
 
 .hud-card {
-    width: 252px;
+    width: min(320px, 92vw);
     background: rgba(10, 14, 20, 0.86);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 16px;
-    padding: 14px 16px;
+    padding: 14px 18px;
     color: #e9edf4;
     backdrop-filter: blur(6px);
     box-shadow: 0 16px 44px rgba(0, 0, 0, 0.45);
+    text-align: center;
 }
 
 .hud-top {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     font-size: 11px;
     font-weight: 800;
@@ -1098,21 +1096,40 @@ body.hud-visible .hud { display: block; }
     text-transform: uppercase;
     color: rgba(233, 237, 244, 0.6);
 }
-.hud-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); animation: hud-pulse 1.6s infinite; }
+.hud-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); animation: hud-pulse 1.6s infinite; flex: none; }
 @keyframes hud-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 
-.hud-time { font-family: var(--mono); font-size: 34px; font-weight: 700; margin: 6px 0 8px; letter-spacing: 0.02em; }
+.hud-time {
+    font-family: var(--mono);
+    font-size: 34px;
+    font-weight: 700;
+    margin: 6px 0 8px;
+    letter-spacing: 0.02em;
+    text-align: center;
+}
 
 .hud-progress { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
 .hud-progress i { display: block; height: 100%; width: 100%; border-radius: 3px; background: var(--accent); transition: width 0.9s linear; }
 
-.hud-reason {
+.hud-admin {
     margin-top: 10px;
     font-size: 12.5px;
     color: rgba(233, 237, 244, 0.7);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: center;
+}
+.hud-admin span { color: #e9edf4; font-weight: 600; }
+
+.hud-reason {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: rgba(233, 237, 244, 0.7);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
 }
 .hud-reason span { color: #e9edf4; font-weight: 600; }
 
@@ -1375,6 +1392,7 @@ body.hud-visible .hud { display: block; }
             </div>
             <div id="hudTime" class="hud-time">--:--</div>
             <div class="hud-progress"><i id="hudProgress"></i></div>
+            <div class="hud-admin">Teamler: <span id="hudAdmin">–</span></div>
             <div class="hud-reason">Grund: <span id="hudReason">–</span></div>
         </div>
     </section>

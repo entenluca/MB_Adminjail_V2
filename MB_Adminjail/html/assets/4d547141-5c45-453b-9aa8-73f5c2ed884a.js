@@ -400,6 +400,7 @@ function updateHud(data = {}) {
     const progress = Math.max(0, Math.min(100, (timeLeft / originalTime) * 100));
 
     els.hudTime.textContent = formatClock(timeLeft);
+    els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 40);
     els.hudReason.textContent = String(data.reason || 'Kein Grund').slice(0, 60);
     els.hudProgress.style.width = `${progress}%`;
 }
@@ -552,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'activeFilter', 'activeList', 'activeMeta',
         'logsFilter', 'logsList', 'logsMeta',
         'modal', 'modalText', 'modalCancel', 'modalConfirm',
-        'hud', 'hudTime', 'hudReason', 'hudProgress'
+        'hud', 'hudTime', 'hudAdmin', 'hudReason', 'hudProgress'
     ].forEach((id) => { els[id] = $(id); });
 
     loadTheme();
