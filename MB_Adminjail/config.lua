@@ -46,8 +46,8 @@ Config.UI = {
     BrandSubtitle = "Admin System",
     SidebarTitle = "AdminJail",
     HudTitle = "AdminJail · Restzeit",
-    HudTeamlerLabel = "Teamler",
-    HudGrundLabel = "Grund",
+    HudTeamlerLabel = "Teamler:",
+    HudGrundLabel = "Grund:",
 
     ViewJailTitle = "Einjailen",
     ViewJailSub = "Spieler in das AdminJail versetzen",
