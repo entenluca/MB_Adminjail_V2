@@ -78,36 +78,6 @@ local function getAutoCreateSql()
     return CREATE_TABLE_SQL
 end
 
-local function initDatabase(cb)
-    if Config.Database.AutoCreateTable == false then
-        if cb then cb(false) end
-        return
-    end
-
-    local sql = getAutoCreateSql()
-
-    if isOxmysql() and MySQL and MySQL.query and MySQL.query.await then
-        local ok, err = pcall(function()
-            MySQL.query.await(sql)
-        end)
-
-        if not ok then
-            print(('^1[MB_Adminjail] SQL Auto-Setup fehlgeschlagen: %s^0'):format(tostring(err)))
-            if cb then cb(false) end
-            return
-        end
-
-        print('^2[MB_Adminjail] SQL-Tabelle automatisch geprüft/erstellt (mb_adminjail).^0')
-        if cb then cb(true) end
-        return
-    end
-
-    dbExecute(sql, {}, function()
-        print('^2[MB_Adminjail] SQL-Tabelle automatisch geprüft/erstellt (mb_adminjail).^0')
-        if cb then cb(true) end
-    end)
-end
-
 local function dbExecute(query, params, cb)
     params = params or {}
 
@@ -169,6 +139,39 @@ local function dbInsert(query, params, cb)
 
     dbExecute(query, params, function()
         if cb then cb(0) end
+    end)
+end
+
+local function initDatabase(cb)
+    if Config.Database.AutoCreateTable == false then
+        if cb then cb(false) end
+        return
+    end
+
+    local sql = getAutoCreateSql()
+
+    local function finishSetup(ok)
+        if ok then
+            print('^2[MB_Adminjail] SQL-Tabelle automatisch geprüft/erstellt (mb_adminjail).^0')
+        end
+        if cb then cb(ok) end
+    end
+
+    if isOxmysql() and MySQL and MySQL.query and MySQL.query.await then
+        local ok, err = pcall(function()
+            MySQL.query.await(sql)
+        end)
+
+        if ok then
+            finishSetup(true)
+            return
+        end
+
+        print(('^3[MB_Adminjail] SQL Auto-Setup via await fehlgeschlagen, Fallback: %s^0'):format(tostring(err)))
+    end
+
+    dbExecute(sql, {}, function()
+        finishSetup(true)
     end)
 end
 
