@@ -41,9 +41,9 @@ Config.UnjailCommand = "mbunjail"
 Config.QuickJailCommand = "mbjail"
 Config.RejoinCheckDelay = 5 -- seconds after spawn before DB recheck
 
--- Notify system: "framework", "ox", "okok", "mythic", "chat", "default".
--- "default" uses GTA/FiveM notification on client side.
-Config.Notify = "framework"
+-- Notify system: "ox", "framework", "okok", "mythic", "chat", "default".
+-- "ox" nutzt ox_lib notify (empfohlen).
+Config.Notify = "ox"
 
 -- Permissions. You can combine ACE + framework groups.
 Config.Permissions = {

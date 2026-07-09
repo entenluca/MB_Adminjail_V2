@@ -5,11 +5,16 @@ lua54 'yes'
 
 author 'Max Berger FiveM Development'
 description 'MB_Adminjail - Adminjail Tablet System with uploaded UI'
-version '1.4.1'
+version '1.4.2'
+
+dependencies {
+    'ox_lib'
+}
 
 ui_page 'html/index.html'
 
 shared_scripts {
+    '@ox_lib/init.lua',
     'config.lua'
 }
 

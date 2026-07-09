@@ -30,11 +30,21 @@ local function initFramework()
 end
 
 local function notify(message, notifyType)
-    notifyType = notifyType or 'info'
+    notifyType = notifyType or 'inform'
 
-    if Config.Notify == 'ox' and lib and lib.notify then
-        lib.notify({ title = 'AdminJail', description = message, type = notifyType })
-        return
+    if Config.Notify == 'ox' then
+        local oxType = notifyType
+        if oxType == 'info' then oxType = 'inform' end
+
+        if lib and lib.notify then
+            lib.notify({ title = 'AdminJail', description = message, type = oxType })
+            return
+        end
+
+        if GetResourceState('ox_lib') == 'started' then
+            exports.ox_lib:notify({ title = 'AdminJail', description = message, type = oxType })
+            return
+        end
     end
 
     if Config.Notify == 'okok' and GetResourceState('okokNotify') == 'started' then
