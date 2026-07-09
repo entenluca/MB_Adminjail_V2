@@ -454,8 +454,8 @@ function updateHud(data = {}) {
     const progress = Math.max(0, Math.min(100, (timeLeft / originalTime) * 100));
 
     if (els.hudTime) els.hudTime.textContent = formatClock(timeLeft);
-    if (els.hudAdmin) els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 40);
-    if (els.hudReason) els.hudReason.textContent = String(data.reason || 'Kein Grund').slice(0, 90);
+    if (els.hudAdmin) els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 22);
+    if (els.hudReason) els.hudReason.textContent = String(data.reason || 'Kein Grund').slice(0, 22);
     if (els.hudProgress) els.hudProgress.style.width = `${progress}%`;
 }
 
