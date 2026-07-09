@@ -930,6 +930,10 @@ body[data-theme="light"] .icon-sun { display: none; }
 }
 .player-row:hover { background: var(--surface-2); }
 .player-row.selected { background: var(--accent-soft); border-color: var(--accent); }
+.player-row.in-jail { opacity: 0.82; }
+.player-row.in-jail.selected { border-color: var(--warn); }
+.pill-compact { font-size: 11px; padding: 4px 8px; flex: none; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
 
 .player-avatar {
     width: 34px;
@@ -1510,14 +1514,9 @@ body.hud-visible .hud { display: block; }
                 <div class="hud-progress-track"><i id="hudProgress"></i></div>
             </div>
             <div class="hud-info">
-                <div class="hud-info-row">
-                    <span id="hudTeamlerLabel" class="hud-info-label">Teamler</span>
-                    <span id="hudAdmin" class="hud-info-value">–</span>
-                </div>
-                <div class="hud-info-row hud-info-row-reason">
-                    <span id="hudGrundLabel" class="hud-info-label">Grund</span>
-                    <span id="hudReason" class="hud-info-value">–</span>
-                </div>
+                <span class="hud-info-item"><em id="hudTeamlerLabel">Teamler</em><span id="hudAdmin">–</span></span>
+                <span class="hud-info-divider" aria-hidden="true"></span>
+                <span class="hud-info-item"><em id="hudGrundLabel">Grund</em><span id="hudReason">–</span></span>
             </div>
         </div>
     </section>

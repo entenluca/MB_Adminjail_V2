@@ -164,11 +164,17 @@ function setSelectedPlayer(player) {
             els.targetStatus.className = 'pill pill-idle';
             els.targetStatus.innerHTML = '<i></i>Kein Spieler gewählt';
         }
+    } else if (player.inJail) {
+        els.playerName.value = player.name || player.serverName || 'Unbekannt';
+        els.targetStatus.className = 'pill pill-warn';
+        els.targetStatus.innerHTML = '<i></i>Bereits im Jail';
     } else {
         els.playerName.value = player.name || player.serverName || 'Unbekannt';
         els.targetStatus.className = 'pill pill-ok';
         els.targetStatus.innerHTML = '<i></i>Online';
     }
+
+    if (els.submitJail) els.submitJail.disabled = !!(player && player.inJail);
 
     renderPlayerList();
 }
@@ -197,15 +203,19 @@ function renderPlayerList() {
 
     const selectedId = state.selectedPlayer ? String(state.selectedPlayer.source) : null;
 
-    els.playerList.innerHTML = list.map((p) => `
-        <button class="player-row${String(p.source) === selectedId ? ' selected' : ''}" data-source="${escapeHtml(p.source)}" type="button" role="option">
+    els.playerList.innerHTML = list.map((p) => {
+        const jailed = !!p.inJail;
+        const selected = String(p.source) === selectedId;
+        return `
+        <button class="player-row${selected ? ' selected' : ''}${jailed ? ' in-jail' : ''}" data-source="${escapeHtml(p.source)}" type="button" role="option">
             <span class="player-avatar">${escapeHtml(p.source)}</span>
             <span class="player-info">
                 <b>${escapeHtml(p.name || 'Unbekannt')}</b>
-                <small>Server-ID ${escapeHtml(p.source)}</small>
+                <small>Server-ID ${escapeHtml(p.source)}${jailed ? ' · Im Jail' : ''}</small>
             </span>
-        </button>
-    `).join('');
+            ${jailed ? '<span class="pill pill-warn pill-compact"><i></i>Jail</span>' : ''}
+        </button>`;
+    }).join('');
 
     els.playerList.querySelectorAll('.player-row').forEach((row) => {
         row.addEventListener('click', () => {
@@ -256,6 +266,10 @@ function submitJail() {
     if (!player || !player.source) {
         toast('Bitte gib eine gültige Spieler-ID ein.', 'error');
         els.playerId.focus();
+        return;
+    }
+    if (player.inJail) {
+        toast(`${player.name || 'Der Spieler'} ist bereits im AdminJail.`, 'error');
         return;
     }
     if (!minutes || minutes < 1 || minutes > 1440) {
@@ -617,6 +631,21 @@ window.addEventListener('message', (event) => {
             break;
         case 'setActiveJails':
             state.activeJails = Array.isArray(data.activeJails) ? data.activeJails : [];
+            {
+                const jailedSources = new Set(
+                    state.activeJails
+                        .filter((r) => r.status === 'active' && r.online && r.source)
+                        .map((r) => Number(r.source))
+                );
+                if (jailedSources.size) {
+                    state.players = state.players.map((p) => ({
+                        ...p,
+                        inJail: jailedSources.has(Number(p.source)) || !!p.inJail
+                    }));
+                    renderPlayerList();
+                    onPlayerIdInput();
+                }
+            }
             renderActiveJails();
             break;
         case 'setLogs':

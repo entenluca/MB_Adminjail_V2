@@ -574,6 +574,29 @@ local function saveTimeLeft(data)
     saveJailProgress(data, false)
 end
 
+local function isSourceInJail(src)
+    local data = jailedPlayers[tonumber(src)]
+    if not data then return false end
+
+    applyTimeProgress(data)
+    return (tonumber(data.timeLeft) or 0) > 0
+end
+
+local function isIdentifierActiveInMemory(identifier)
+    if not identifier then return false end
+
+    for _, data in pairs(jailedPlayers) do
+        if data and data.identifier == identifier then
+            applyTimeProgress(data)
+            if (tonumber(data.timeLeft) or 0) > 0 then
+                return true
+            end
+        end
+    end
+
+    return false
+end
+
 local function sendPlayersToAdmin(src)
     if not hasPermission(src) then return end
 
@@ -585,7 +608,8 @@ local function sendPlayersToAdmin(src)
         players[#players + 1] = {
             source = target,
             name = getDisplayName(target),
-            serverName = GetPlayerName(target) or getDisplayName(target)
+            serverName = GetPlayerName(target) or getDisplayName(target),
+            inJail = isSourceInJail(target)
         }
     end
 
@@ -758,10 +782,37 @@ local function jailPlayer(target, adminSrc, minutes, reason)
     local adminFiveMName = getFiveMName(adminSrc)
     local adminIdentifier = adminSrc == 0 and 'console' or getIdentifier(adminSrc)
 
-    dbExecute('UPDATE `mb_adminjail` SET `status` = "replaced", `released_by` = @released_by, `released_at` = CURRENT_TIMESTAMP WHERE `identifier` = @identifier AND `status` = "active"', {
-        ['@identifier'] = identifier,
-        ['@released_by'] = adminName
-    }, function()
+    if isSourceInJail(target) or isIdentifierActiveInMemory(identifier) then
+        notify(adminSrc, ('Spieler %s ist bereits im AdminJail.'):format(playerName), 'error')
+        return
+    end
+
+    dbQuery('SELECT `id`, `time_left`, `release_at` FROM `mb_adminjail` WHERE `identifier` = @identifier AND `status` = "active" ORDER BY `id` DESC LIMIT 1', {
+        ['@identifier'] = identifier
+    }, function(rows)
+        if not GetPlayerName(target) then
+            notify(adminSrc, 'Spieler ist nicht mehr online.', 'error')
+            return
+        end
+
+        local row = rows and rows[1]
+        if row then
+            local timeLeft = tonumber(row.time_left) or 0
+            if Config.TimerMode == "realtime" then
+                timeLeft = math.max(0, (tonumber(row.release_at) or os.time()) - os.time())
+            end
+
+            if timeLeft > 0 then
+                notify(adminSrc, ('Spieler %s ist bereits im AdminJail.'):format(playerName), 'error')
+                if not jailedPlayers[target] then
+                    checkJailOnJoin(target)
+                end
+                return
+            end
+
+            completeJailRecord(identifier, tonumber(row.id), 'SYSTEM')
+        end
+
         dbInsert('INSERT INTO `mb_adminjail` (`identifier`, `name`, `reason`, `time_left`, `jailed_by`, `jailed_by_identifier`, `release_at`, `status`) VALUES (@identifier, @name, @reason, @time_left, @jailed_by, @jailed_by_identifier, @release_at, "active")', {
             ['@identifier'] = identifier,
             ['@name'] = playerName,
