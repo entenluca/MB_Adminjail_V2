@@ -400,8 +400,8 @@ function updateHud(data = {}) {
     const progress = Math.max(0, Math.min(100, (timeLeft / originalTime) * 100));
 
     els.hudTime.textContent = formatClock(timeLeft);
-    els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 28);
-    els.hudReason.textContent = String(data.reason || 'Kein Grund').slice(0, 28);
+    els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 18);
+    els.hudReason.textContent = String(data.reason || 'Kein Grund').slice(0, 18);
     els.hudProgress.style.width = `${progress}%`;
 }
 
