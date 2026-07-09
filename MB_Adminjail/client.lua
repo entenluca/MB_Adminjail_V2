@@ -81,6 +81,31 @@ local function notify(message, notifyType)
     EndTextCommandThefeedPostTicker(false, false)
 end
 
+local function getUiConfig()
+    local ui = Config.UI or {}
+
+    return {
+        brandTitle = ui.BrandTitle or 'AdminJail',
+        brandSubtitle = ui.BrandSubtitle or '',
+        sidebarTitle = ui.SidebarTitle or 'AdminJail',
+        hudTitle = ui.HudTitle or 'AdminJail · Restzeit',
+        hudTeamlerLabel = ui.HudTeamlerLabel or 'Teamler:',
+        viewJailTitle = ui.ViewJailTitle or 'Einjailen',
+        viewJailSub = ui.ViewJailSub or 'Spieler in das AdminJail versetzen',
+        viewActiveTitle = ui.ViewActiveTitle or 'Aktive Jails',
+        viewActiveSub = ui.ViewActiveSub or 'Laufende Strafen verwalten und entlassen',
+        viewLogsTitle = ui.ViewLogsTitle or 'Verlauf',
+        viewLogsSub = ui.ViewLogsSub or 'Abgeschlossene und aktive Einträge',
+        navJail = ui.NavJail or 'Einjailen',
+        navActive = ui.NavActive or 'Aktive Jails',
+        navLogs = ui.NavLogs or 'Verlauf'
+    }
+end
+
+local function sendUiConfig()
+    SendNUIMessage({ action = 'setUiConfig', ui = getUiConfig() })
+end
+
 local function closeTablet()
     tabletOpen = false
     SetNuiFocus(false, false)
@@ -92,7 +117,7 @@ local function openTablet()
     tabletOpen = true
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(false)
-    SendNUIMessage({ action = 'open' })
+    SendNUIMessage({ action = 'open', ui = getUiConfig() })
     TriggerServerEvent('mb_adminjail:server:requestPlayers')
     TriggerServerEvent('mb_adminjail:server:requestActiveJails')
 end
@@ -207,6 +232,11 @@ local function endJail(data)
 end
 
 initFramework()
+
+CreateThread(function()
+    Wait(1500)
+    sendUiConfig()
+end)
 
 RegisterNetEvent('mb_adminjail:client:notify', function(message, notifyType)
     notify(message, notifyType)

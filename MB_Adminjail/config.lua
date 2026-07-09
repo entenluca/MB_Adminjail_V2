@@ -40,6 +40,26 @@ Config.DisableCombatControls = true
 -- Keine zusätzlichen Command-Hinweise im HUD.
 Config.ShowJailTimerHud = true
 
+-- UI Texte (Logo entfernt – stattdessen anpassbarer Text in der Sidebar)
+Config.UI = {
+    BrandTitle = "AdminJail",
+    BrandSubtitle = "Admin System",
+    SidebarTitle = "AdminJail",
+    HudTitle = "AdminJail · Restzeit",
+    HudTeamlerLabel = "Teamler:",
+
+    ViewJailTitle = "Einjailen",
+    ViewJailSub = "Spieler in das AdminJail versetzen",
+    ViewActiveTitle = "Aktive Jails",
+    ViewActiveSub = "Laufende Strafen verwalten und entlassen",
+    ViewLogsTitle = "Verlauf",
+    ViewLogsSub = "Abgeschlossene und aktive Einträge",
+
+    NavJail = "Einjailen",
+    NavActive = "Aktive Jails",
+    NavLogs = "Verlauf"
+}
+
 -- UI / Commands
 Config.OpenTabletCommand = "mbadminjail"
 Config.UnjailCommand = "mbunjail"

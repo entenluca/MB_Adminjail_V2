@@ -574,7 +574,23 @@ body.hud-visible .toasts {
 }
 
 .brand { padding: 0 8px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-.brand img { width: 100%; max-width: 170px; display: block; }
+.brand-title {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: #fff;
+    word-break: break-word;
+}
+.brand-subtitle {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(233, 237, 244, 0.5);
+    line-height: 1.3;
+    word-break: break-word;
+}
+.brand-subtitle.hidden { display: none; }
 
 .sidebar-title {
     padding: 16px 10px 10px;
@@ -1216,24 +1232,25 @@ body.hud-visible .hud { display: block; }
 
                 <aside class="sidebar">
                     <div class="brand">
-                        <img id="brandLogo" src="assets/dc59759f-9f1d-4e69-8867-b1686319224c.png" alt="Max Berger FiveM Development">
+                        <div id="brandTitle" class="brand-title">AdminJail</div>
+                        <div id="brandSubtitle" class="brand-subtitle hidden"></div>
                     </div>
 
-                    <div class="sidebar-title">AdminJail</div>
+                    <div id="sidebarTitle" class="sidebar-title">AdminJail</div>
 
                     <nav class="nav" aria-label="Navigation">
                         <button class="nav-item active" data-view="jail" type="button">
                             <svg viewBox="0 0 24 24"><use href="#i-gavel"></use></svg>
-                            <span>Einjailen</span>
+                            <span id="navJailLabel">Einjailen</span>
                         </button>
                         <button class="nav-item" data-view="active" type="button">
                             <svg viewBox="0 0 24 24"><use href="#i-list"></use></svg>
-                            <span>Aktive Jails</span>
+                            <span id="navActiveLabel">Aktive Jails</span>
                             <span id="navActiveCount" class="nav-badge hidden">0</span>
                         </button>
                         <button class="nav-item" data-view="logs" type="button">
                             <svg viewBox="0 0 24 24"><use href="#i-history"></use></svg>
-                            <span>Verlauf</span>
+                            <span id="navLogsLabel">Verlauf</span>
                         </button>
                     </nav>
 
@@ -1401,12 +1418,12 @@ body.hud-visible .hud { display: block; }
         <div class="hud-card">
             <div class="hud-top">
                 <span class="hud-dot"></span>
-                <span>AdminJail · Restzeit</span>
+                <span id="hudTitle">AdminJail · Restzeit</span>
             </div>
             <div id="hudTime" class="hud-time">--:--</div>
             <div class="hud-progress"><i id="hudProgress"></i></div>
             <div class="hud-meta">
-                <div class="hud-meta-item">Teamler: <span id="hudAdmin">–</span></div>
+                <div class="hud-meta-item"><span id="hudTeamlerLabel">Teamler:</span> <span id="hudAdmin">–</span></div>
             </div>
         </div>
     </section>

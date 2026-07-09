@@ -104,6 +104,30 @@ const VIEWS = {
     logs:   { title: 'Verlauf',      sub: 'Abgeschlossene und aktive Einträge' }
 };
 
+function applyUiConfig(ui = {}) {
+    if (ui.viewJailTitle) VIEWS.jail.title = ui.viewJailTitle;
+    if (ui.viewJailSub) VIEWS.jail.sub = ui.viewJailSub;
+    if (ui.viewActiveTitle) VIEWS.active.title = ui.viewActiveTitle;
+    if (ui.viewActiveSub) VIEWS.active.sub = ui.viewActiveSub;
+    if (ui.viewLogsTitle) VIEWS.logs.title = ui.viewLogsTitle;
+    if (ui.viewLogsSub) VIEWS.logs.sub = ui.viewLogsSub;
+
+    if (els.brandTitle && ui.brandTitle) els.brandTitle.textContent = ui.brandTitle;
+    if (els.brandSubtitle) {
+        const subtitle = String(ui.brandSubtitle || '').trim();
+        els.brandSubtitle.textContent = subtitle;
+        els.brandSubtitle.classList.toggle('hidden', subtitle === '');
+    }
+    if (els.sidebarTitle && ui.sidebarTitle) els.sidebarTitle.textContent = ui.sidebarTitle;
+    if (els.navJailLabel && ui.navJail) els.navJailLabel.textContent = ui.navJail;
+    if (els.navActiveLabel && ui.navActive) els.navActiveLabel.textContent = ui.navActive;
+    if (els.navLogsLabel && ui.navLogs) els.navLogsLabel.textContent = ui.navLogs;
+    if (els.hudTitle && ui.hudTitle) els.hudTitle.textContent = ui.hudTitle;
+    if (els.hudTeamlerLabel && ui.hudTeamlerLabel) els.hudTeamlerLabel.textContent = ui.hudTeamlerLabel;
+
+    if (VIEWS[state.view]) setView(state.view);
+}
+
 function setView(view) {
     if (!VIEWS[view]) return;
     state.view = view;
@@ -447,7 +471,8 @@ function hideHud() {
 
 /* ---------- Öffnen / Schließen ---------- */
 
-function openTablet() {
+function openTablet(ui) {
+    if (ui) applyUiConfig(ui);
     document.body.classList.remove('hud-visible');
     document.body.classList.add('visible');
     els.app.setAttribute('aria-hidden', 'false');
@@ -513,7 +538,10 @@ window.addEventListener('message', (event) => {
     const data = event.data || {};
 
     switch (data.action) {
-        case 'open': openTablet(); break;
+        case 'open': openTablet(data.ui); break;
+        case 'setUiConfig':
+            applyUiConfig(data.ui || {});
+            break;
         case 'close':
             document.body.classList.remove('visible');
             els.app.setAttribute('aria-hidden', 'true');
@@ -572,13 +600,14 @@ function demoPost(name) {
 document.addEventListener('DOMContentLoaded', () => {
     [
         'app', 'toasts', 'clock', 'themeToggle', 'themeLabel', 'closeBtn', 'refreshBtn',
+        'brandTitle', 'brandSubtitle', 'sidebarTitle', 'navJailLabel', 'navActiveLabel', 'navLogsLabel',
         'viewTitle', 'viewSub', 'navActiveCount',
         'playerId', 'playerName', 'targetStatus', 'jailMinutes', 'jailReason', 'reasonCount', 'submitJail',
         'playerFilter', 'playerList', 'playerCount',
         'activeFilter', 'activeList', 'activeMeta',
         'logsFilter', 'logsList', 'logsMeta',
         'modal', 'modalText', 'modalCancel', 'modalConfirm',
-        'hud', 'hudTime', 'hudAdmin', 'hudProgress'
+        'hud', 'hudTime', 'hudTitle', 'hudTeamlerLabel', 'hudAdmin', 'hudProgress'
     ].forEach((id) => { els[id] = $(id); });
 
     loadTheme();
