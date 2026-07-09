@@ -124,6 +124,7 @@ function applyUiConfig(ui = {}) {
     if (els.navLogsLabel && ui.navLogs) els.navLogsLabel.textContent = ui.navLogs;
     if (els.hudTitle && ui.hudTitle) els.hudTitle.textContent = ui.hudTitle;
     if (els.hudTeamlerLabel && ui.hudTeamlerLabel) els.hudTeamlerLabel.textContent = ui.hudTeamlerLabel;
+    if (els.hudGrundLabel && ui.hudGrundLabel) els.hudGrundLabel.textContent = ui.hudGrundLabel;
 
     if (VIEWS[state.view]) setView(state.view);
 }
@@ -453,7 +454,8 @@ function updateHud(data = {}) {
     const progress = Math.max(0, Math.min(100, (timeLeft / originalTime) * 100));
 
     if (els.hudTime) els.hudTime.textContent = formatClock(timeLeft);
-    if (els.hudAdmin) els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 24);
+    if (els.hudAdmin) els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 40);
+    if (els.hudReason) els.hudReason.textContent = String(data.reason || 'Kein Grund').slice(0, 90);
     if (els.hudProgress) els.hudProgress.style.width = `${progress}%`;
 }
 
@@ -637,7 +639,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'activeFilter', 'activeList', 'activeMeta',
         'logsFilter', 'logsList', 'logsMeta',
         'modal', 'modalText', 'modalCancel', 'modalConfirm',
-        'hud', 'hudTime', 'hudTitle', 'hudTeamlerLabel', 'hudAdmin', 'hudProgress'
+        'hud', 'hudTime', 'hudTitle', 'hudTeamlerLabel', 'hudGrundLabel', 'hudAdmin', 'hudReason', 'hudProgress'
     ].forEach((id) => { els[id] = $(id); });
 
     loadTheme();
