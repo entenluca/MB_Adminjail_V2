@@ -593,17 +593,43 @@ local function sendPlayersToAdmin(src)
     TriggerClientEvent('mb_adminjail:client:setPlayers', src, players)
 end
 
+local function getLiveTimeLeft(row, onlineSrc)
+    if onlineSrc and jailedPlayers[onlineSrc] then
+        applyTimeProgress(jailedPlayers[onlineSrc])
+        return jailedPlayers[onlineSrc].timeLeft
+    end
+
+    local timeLeft = tonumber(row.time_left) or 0
+    if Config.TimerMode == "realtime" then
+        local releaseAt = tonumber(row.release_at) or (os.time() + timeLeft)
+        timeLeft = math.max(0, releaseAt - os.time())
+    end
+
+    return timeLeft
+end
+
 local function publicJailRows(rows)
     local publicRows = {}
 
     for _, row in ipairs(rows or {}) do
+        if (row.status or 'active') ~= 'active' then goto continue end
+
         local onlineSrc = findOnlineSourceByIdentifier(row.identifier)
+        local timeLeft = getLiveTimeLeft(row, onlineSrc)
+
+        if timeLeft <= 0 then
+            completeJailRecord(row.identifier, tonumber(row.id), 'SYSTEM')
+            if onlineSrc and jailedPlayers[onlineSrc] then
+                finishJail(row.identifier, onlineSrc, 'SYSTEM', 'system', true, tonumber(row.id), jailedPlayers[onlineSrc])
+            end
+            goto continue
+        end
 
         publicRows[#publicRows + 1] = {
             id = tonumber(row.id) or 0,
             name = row.name or 'Unbekannt',
             reason = row.reason or 'Kein Grund',
-            time_left = tonumber(row.time_left) or 0,
+            time_left = timeLeft,
             jailed_by = row.jailed_by or 'Unbekannt',
             jailed_at = row.jailed_at or '',
             released_by = row.released_by,
@@ -612,6 +638,8 @@ local function publicJailRows(rows)
             online = onlineSrc ~= nil,
             source = onlineSrc
         }
+
+        ::continue::
     end
 
     return publicRows
@@ -798,7 +826,7 @@ checkJailOnJoin = function(src, attempt)
     if not identifier then
         local maxAttempts = math.max(1, tonumber(Config.RejoinCheckRetries) or 8)
         if attempt < maxAttempts then
-            SetTimeout(2000, function()
+            SetTimeout(math.max(500, tonumber(Config.RejoinCheckRetryMs) or 1000), function()
                 checkJailOnJoin(src, attempt + 1)
             end)
         end
@@ -865,7 +893,13 @@ local function scheduleJailCheck(src)
     src = tonumber(src)
     if not src then return end
 
-    SetTimeout((Config.RejoinCheckDelay or 5) * 1000, function()
+    checkJailOnJoin(src)
+
+    SetTimeout(math.max(500, tonumber(Config.RejoinCheckRetryMs) or 1000), function()
+        checkJailOnJoin(src)
+    end)
+
+    SetTimeout((Config.RejoinCheckDelay or 1) * 1000, function()
         checkJailOnJoin(src)
     end)
 end
@@ -889,9 +923,21 @@ local function unjailByRecord(rowId, adminSrc)
             return
         end
 
+        local targetSrc = findOnlineSourceByIdentifier(row.identifier)
+        local timeLeft = getLiveTimeLeft(row, targetSrc)
+
+        if timeLeft <= 0 then
+            completeJailRecord(row.identifier, rowId, 'SYSTEM')
+            if targetSrc and jailedPlayers[targetSrc] then
+                finishJail(row.identifier, targetSrc, 'SYSTEM', 'system', true, rowId, jailedPlayers[targetSrc])
+            end
+            notify(adminSrc, 'Die Jail-Zeit dieses Spielers ist bereits abgelaufen.', 'info')
+            refreshAdminTablet(adminSrc)
+            return
+        end
+
         local adminName = adminSrc == 0 and 'Console' or getDisplayName(adminSrc)
         local adminIdentifier = adminSrc == 0 and 'console' or getIdentifier(adminSrc)
-        local targetSrc = findOnlineSourceByIdentifier(row.identifier)
 
         if targetSrc then
             finishJail(row.identifier, targetSrc, adminName, adminIdentifier, false, rowId, jailedPlayers[targetSrc])

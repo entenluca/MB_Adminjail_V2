@@ -649,6 +649,11 @@ document.addEventListener('DOMContentLoaded', () => {
     syncChips();
     setInterval(updateClock, 30000);
     setInterval(tickTimers, 1000);
+    setInterval(() => {
+        if (document.body.classList.contains('visible') && state.view === 'active') {
+            post('getActiveJails');
+        }
+    }, 3000);
     setView('jail');
     renderPlayerList();
     renderActiveJails();

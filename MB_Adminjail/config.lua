@@ -65,8 +65,9 @@ Config.UI = {
 Config.OpenTabletCommand = "mbadminjail"
 Config.UnjailCommand = "mbunjail"
 Config.QuickJailCommand = "mbjail"
-Config.RejoinCheckDelay = 5 -- seconds after spawn before DB recheck
-Config.RejoinCheckRetries = 8 -- retries if player identifier is not ready yet
+Config.RejoinCheckDelay = 1 -- seconds after spawn before DB recheck (zusätzlich zur Sofort-Prüfung)
+Config.RejoinCheckRetries = 10 -- retries if player identifier is not ready yet
+Config.RejoinCheckRetryMs = 1000 -- ms between identifier retries
 
 -- Notify system: "ox", "framework", "okok", "mythic", "chat", "default".
 -- "ox" nutzt ox_lib notify (empfohlen).

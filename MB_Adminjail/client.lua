@@ -406,29 +406,32 @@ CreateThread(function()
     end
 end)
 
-local function requestJailCheck()
+local function requestJailCheck(force)
     local now = GetGameTimer()
-    if now - lastJailCheckAt < 3000 then return end
+    if not force and now - lastJailCheckAt < 1500 then return end
     lastJailCheckAt = now
     TriggerServerEvent('mb_adminjail:server:playerReady')
 end
 
 AddEventHandler('playerSpawned', function()
-    SetTimeout((Config.RejoinCheckDelay or 5) * 1000, requestJailCheck)
+    requestJailCheck(true)
+    SetTimeout(1500, function() requestJailCheck(true) end)
 end)
 
 CreateThread(function()
-    Wait(8000)
-    requestJailCheck()
+    Wait(2000)
+    requestJailCheck(true)
 end)
 
 if Config.Framework == 'ESX' then
     RegisterNetEvent('esx:playerLoaded', function()
-        SetTimeout((Config.RejoinCheckDelay or 5) * 1000, requestJailCheck)
+        requestJailCheck(true)
+        SetTimeout(1500, function() requestJailCheck(true) end)
     end)
 elseif Config.Framework == 'QBCore' then
     RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-        SetTimeout((Config.RejoinCheckDelay or 5) * 1000, requestJailCheck)
+        requestJailCheck(true)
+        SetTimeout(1500, function() requestJailCheck(true) end)
     end)
 end
 CreateThread(function()

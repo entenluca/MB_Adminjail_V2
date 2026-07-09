@@ -345,19 +345,20 @@ button { cursor: pointer; background: none; border: none; }
 
 .app {
     position: fixed;
-    inset: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: auto;
     display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 3vh 3vw;
-    background: rgba(0, 0, 0, 0) !important;
+    background: none !important;
     background-color: rgba(0, 0, 0, 0) !important;
     pointer-events: none;
+    z-index: 50;
 }
 
 body.visible .app {
-    display: flex;
-    pointer-events: auto;
+    display: block;
 }
 
 .tablet {
@@ -369,8 +370,9 @@ body.visible .app {
     padding: 12px;
     box-shadow: var(--shadow);
     border: 1px solid rgba(255, 255, 255, 0.055);
-    overflow: visible;
+    overflow: hidden;
     animation: tablet-in 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
+    pointer-events: auto;
 }
 
 @keyframes tablet-in {
@@ -543,7 +545,6 @@ body.hud-visible {
 body:not(.visible):not(.hud-visible) .app,
 body:not(.visible):not(.hud-visible) .modal-backdrop {
     display: none !important;
-    visibility: hidden !important;
     pointer-events: none !important;
 }
 
@@ -1016,16 +1017,18 @@ body[data-theme="light"] .icon-sun { display: none; }
 /* ---------- Modal ---------- */
 
 .modal-backdrop {
-    position: fixed;
+    position: absolute;
     inset: 0;
     display: none;
     align-items: center;
     justify-content: center;
-    background: rgba(4, 7, 12, 0.6);
-    backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     z-index: 60;
+    border-radius: calc(var(--radius-lg) + 10px);
 }
-.modal-backdrop.show { display: flex; }
+.modal-backdrop.show { display: flex; pointer-events: auto; }
 
 .modal {
     width: min(420px, 88vw);
@@ -1458,26 +1461,26 @@ body.hud-visible .hud { display: block; }
                 </div>
 
             </div>
+
+            <!-- Confirm dialog (nur über dem Tablet, nicht fullscreen) -->
+            <div id="modal" class="modal-backdrop" aria-hidden="true">
+                <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="modalTitle">
+                    <div class="modal-icon">
+                        <svg viewBox="0 0 24 24"><use href="#i-unlock"></use></svg>
+                    </div>
+                    <h3 id="modalTitle">Spieler entlassen?</h3>
+                    <p id="modalText">Der Spieler wird sofort aus dem AdminJail entlassen.</p>
+                    <div class="modal-actions">
+                        <button id="modalCancel" class="btn btn-ghost" type="button">Abbrechen</button>
+                        <button id="modalConfirm" class="btn btn-danger" type="button">
+                            <svg viewBox="0 0 24 24"><use href="#i-unlock"></use></svg>
+                            Entlassen
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
-
-    <!-- Confirm dialog -->
-    <div id="modal" class="modal-backdrop" aria-hidden="true">
-        <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="modalTitle">
-            <div class="modal-icon">
-                <svg viewBox="0 0 24 24"><use href="#i-unlock"></use></svg>
-            </div>
-            <h3 id="modalTitle">Spieler entlassen?</h3>
-            <p id="modalText">Der Spieler wird sofort aus dem AdminJail entlassen.</p>
-            <div class="modal-actions">
-                <button id="modalCancel" class="btn btn-ghost" type="button">Abbrechen</button>
-                <button id="modalConfirm" class="btn btn-danger" type="button">
-                    <svg viewBox="0 0 24 24"><use href="#i-unlock"></use></svg>
-                    Entlassen
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!-- Jail HUD (nur sichtbar, wenn der Spieler selbst im Jail ist) -->
     <section id="hud" class="hud" aria-hidden="true">
