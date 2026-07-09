@@ -9,6 +9,9 @@ Config.Framework = "ESX"
 Config.Database = {
     Driver = "oxmysql",
 
+    -- SQL-Tabelle beim Resource-Start automatisch anlegen (CREATE TABLE IF NOT EXISTS).
+    AutoCreateTable = true,
+
     -- true: deletes active row after release, logs table view will only contain currently stored rows.
     -- false: marks rows as released/completed and keeps them for the Tablet log view.
     DeleteOnRelease = false
@@ -40,6 +43,7 @@ Config.OpenTabletCommand = "mbadminjail"
 Config.UnjailCommand = "mbunjail"
 Config.QuickJailCommand = "mbjail"
 Config.RejoinCheckDelay = 5 -- seconds after spawn before DB recheck
+Config.RejoinCheckRetries = 8 -- retries if player identifier is not ready yet
 
 -- Notify system: "ox", "framework", "okok", "mythic", "chat", "default".
 -- "ox" nutzt ox_lib notify (empfohlen).

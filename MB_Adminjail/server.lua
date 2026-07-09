@@ -1,5 +1,6 @@
 local ESX, QBCore = nil, nil
 local jailedPlayers = {}
+local checkJailOnJoin
 
 local CREATE_TABLE_SQL = [[
 CREATE TABLE IF NOT EXISTS `mb_adminjail` (
@@ -45,6 +46,66 @@ end
 
 local function isOxmysql()
     return (Config.Database.Driver == "oxmysql" and GetResourceState('oxmysql') == 'started')
+end
+
+local function waitForDatabase(maxAttempts)
+    maxAttempts = maxAttempts or 40
+
+    for attempt = 1, maxAttempts do
+        if isOxmysql() then
+            if MySQL and MySQL.ready and MySQL.ready.await then
+                MySQL.ready.await()
+            end
+            return true
+        end
+
+        if MySQL and MySQL.Async then
+            return true
+        end
+
+        Wait(500)
+    end
+
+    return false
+end
+
+local function getAutoCreateSql()
+    local sqlFile = LoadResourceFile(GetCurrentResourceName(), 'sql/mb_adminjail.sql')
+    if sqlFile and trim(sqlFile) ~= '' then
+        return sqlFile
+    end
+
+    return CREATE_TABLE_SQL
+end
+
+local function initDatabase(cb)
+    if Config.Database.AutoCreateTable == false then
+        if cb then cb(false) end
+        return
+    end
+
+    local sql = getAutoCreateSql()
+
+    if isOxmysql() and MySQL and MySQL.query and MySQL.query.await then
+        local ok, err = pcall(function()
+            MySQL.query.await(sql)
+        end)
+
+        if not ok then
+            print(('^1[MB_Adminjail] SQL Auto-Setup fehlgeschlagen: %s^0'):format(tostring(err)))
+            if cb then cb(false) end
+            return
+        end
+
+        print('^2[MB_Adminjail] SQL-Tabelle automatisch geprüft/erstellt (mb_adminjail).^0')
+        if cb then cb(true) end
+        return
+    end
+
+    dbExecute(sql, {}, function()
+        print('^2[MB_Adminjail] SQL-Tabelle automatisch geprüft/erstellt (mb_adminjail).^0')
+        if cb then cb(true) end
+    end)
 end
 
 local function dbExecute(query, params, cb)
@@ -475,21 +536,42 @@ local function completeJailRecord(identifier, rowId, releasedBy)
     end
 end
 
-local function saveTimeLeft(data)
-    if not data then return end
+local function saveJailProgress(data, sync)
+    if not data or not data.identifier then return false end
+
+    applyTimeProgress(data)
 
     local params = {
         ['@id'] = data.id or 0,
         ['@identifier'] = data.identifier,
         ['@time_left'] = math.max(0, math.floor(data.timeLeft or 0)),
-        ['@release_at'] = data.releaseAt or nil
+        ['@release_at'] = data.releaseAt or nil,
+        ['@name'] = data.name or 'Unbekannt'
     }
 
-    if data.id and data.id > 0 then
-        dbExecute('UPDATE `mb_adminjail` SET `time_left` = @time_left, `release_at` = @release_at WHERE `id` = @id AND `status` = "active" LIMIT 1', params)
-    else
-        dbExecute('UPDATE `mb_adminjail` SET `time_left` = @time_left, `release_at` = @release_at WHERE `identifier` = @identifier AND `status` = "active" ORDER BY `id` DESC LIMIT 1', params)
+    local queryById = 'UPDATE `mb_adminjail` SET `time_left` = @time_left, `release_at` = @release_at, `name` = @name WHERE `id` = @id AND `status` = "active" LIMIT 1'
+    local queryByIdentifier = 'UPDATE `mb_adminjail` SET `time_left` = @time_left, `release_at` = @release_at, `name` = @name WHERE `identifier` = @identifier AND `status` = "active" ORDER BY `id` DESC LIMIT 1'
+    local query = (data.id and data.id > 0) and queryById or queryByIdentifier
+
+    if sync and isOxmysql() and MySQL and MySQL.update and MySQL.update.await then
+        local ok, err = pcall(function()
+            MySQL.update.await(query, params)
+        end)
+
+        if not ok then
+            print(('^1[MB_Adminjail] Sync-Speichern fehlgeschlagen (%s): %s^0'):format(data.identifier, tostring(err)))
+            return false
+        end
+
+        return true
     end
+
+    dbExecute(query, params)
+    return true
+end
+
+local function saveTimeLeft(data)
+    saveJailProgress(data, false)
 end
 
 local function sendPlayersToAdmin(src)
@@ -686,19 +768,29 @@ local function jailPlayer(target, adminSrc, minutes, reason)
     end)
 end
 
-local function checkJailOnJoin(src)
+checkJailOnJoin = function(src, attempt)
+    attempt = tonumber(attempt) or 1
     src = tonumber(src)
     if not src or not GetPlayerName(src) then return end
     if jailedPlayers[src] then return end
 
     local identifier = getIdentifier(src)
-    if not identifier then return end
+    if not identifier then
+        local maxAttempts = math.max(1, tonumber(Config.RejoinCheckRetries) or 8)
+        if attempt < maxAttempts then
+            SetTimeout(2000, function()
+                checkJailOnJoin(src, attempt + 1)
+            end)
+        end
+        return
+    end
 
     dbQuery('SELECT * FROM `mb_adminjail` WHERE `identifier` = @identifier AND `status` = "active" ORDER BY `id` DESC LIMIT 1', {
         ['@identifier'] = identifier
     }, function(rows)
         local row = rows and rows[1]
         if not row or not GetPlayerName(src) then return end
+        if jailedPlayers[src] then return end
 
         local timeLeft = tonumber(row.time_left) or 0
         local releaseAt = tonumber(row.release_at) or (os.time() + timeLeft)
@@ -715,7 +807,7 @@ local function checkJailOnJoin(src)
         jailedPlayers[src] = {
             id = tonumber(row.id) or 0,
             identifier = identifier,
-            name = row.name or getDisplayName(src),
+            name = getDisplayName(src),
             reason = row.reason or 'Kein Grund gespeichert',
             timeLeft = timeLeft,
             originalTime = timeLeft,
@@ -740,6 +832,21 @@ local function checkJailOnJoin(src)
         })
 
         notify(src, ('Du bist noch im AdminJail. Restzeit: %s Minuten (%s)'):format(minutesLeftLabel(timeLeft), secondsToClock(timeLeft)), 'error')
+    end)
+end
+
+local function restoreOnlineJails()
+    for _, playerId in ipairs(GetPlayers()) do
+        checkJailOnJoin(tonumber(playerId))
+    end
+end
+
+local function scheduleJailCheck(src)
+    src = tonumber(src)
+    if not src then return end
+
+    SetTimeout((Config.RejoinCheckDelay or 5) * 1000, function()
+        checkJailOnJoin(src)
     end)
 end
 
@@ -791,8 +898,15 @@ end
 CreateThread(function()
     Wait(1000)
     initFramework()
-    dbExecute(CREATE_TABLE_SQL, {}, function()
-        print(('^2[MB_Adminjail] MB_Adminjail Loaded. Framework=%s, TimerMode=%s, Stored online jails=%s^0'):format(Config.Framework, Config.TimerMode, tableLength(jailedPlayers)))
+
+    if not waitForDatabase() then
+        print('^1[MB_Adminjail] Keine MySQL-Verbindung. Starte oxmysql vor MB_Adminjail.^0')
+        return
+    end
+
+    initDatabase(function()
+        print(('^2[MB_Adminjail] MB_Adminjail Loaded. Framework=%s, TimerMode=%s^0'):format(Config.Framework, Config.TimerMode))
+        restoreOnlineJails()
     end)
 end)
 
@@ -816,7 +930,10 @@ CreateThread(function()
                 if data.timeLeft <= 0 then
                     finishJail(data.identifier, src, 'SYSTEM', 'system', true, data.id, data)
                 else
-                    if shouldSave then saveTimeLeft(data) end
+                    if shouldSave then
+                        data.name = getDisplayName(src)
+                        saveJailProgress(data, false)
+                    end
                     TriggerClientEvent('mb_adminjail:client:updateTime', src, data.timeLeft)
                 end
             end
@@ -842,18 +959,28 @@ AddEventHandler('playerDropped', function()
     local data = jailedPlayers[src]
 
     if data then
-        applyTimeProgress(data)
-        saveTimeLeft(data)
+        if GetPlayerName(src) then
+            data.name = getDisplayName(src)
+        end
+
+        saveJailProgress(data, true)
         jailedPlayers[src] = nil
     end
 end)
 
 RegisterNetEvent('mb_adminjail:server:playerReady', function()
-    local src = source
-    SetTimeout((Config.RejoinCheckDelay or 5) * 1000, function()
-        checkJailOnJoin(src)
-    end)
+    scheduleJailCheck(source)
 end)
+
+if Config.Framework == 'ESX' then
+    AddEventHandler('esx:playerLoaded', function(playerId)
+        scheduleJailCheck(playerId)
+    end)
+elseif Config.Framework == 'QBCore' then
+    RegisterNetEvent('QBCore:Server:OnPlayerLoaded', function()
+        scheduleJailCheck(source)
+    end)
+end
 
 RegisterNetEvent('mb_adminjail:server:requestPlayers', function()
     local src = source
@@ -949,12 +1076,26 @@ RegisterCommand(Config.UnjailCommand, function(source, args)
 end, false)
 
 
+AddEventHandler('onResourceStart', function(resourceName)
+    if resourceName ~= GetCurrentResourceName() then return end
+
+    CreateThread(function()
+        Wait(1500)
+        if not waitForDatabase() then return end
+        initDatabase(function()
+            restoreOnlineJails()
+        end)
+    end)
+end)
+
 AddEventHandler('onResourceStop', function(resourceName)
     if resourceName ~= GetCurrentResourceName() then return end
 
-    for _, data in pairs(jailedPlayers) do
-        applyTimeProgress(data)
-        saveTimeLeft(data)
+    for src, data in pairs(jailedPlayers) do
+        if GetPlayerName(src) then
+            data.name = getDisplayName(src)
+        end
+        saveJailProgress(data, true)
     end
 end)
 

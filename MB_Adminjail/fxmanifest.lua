@@ -5,10 +5,11 @@ lua54 'yes'
 
 author 'Max Berger FiveM Development'
 description 'MB_Adminjail - Adminjail Tablet System with uploaded UI'
-version '1.4.2'
+version '1.5.0'
 
 dependencies {
-    'ox_lib'
+    'ox_lib',
+    'oxmysql'
 }
 
 ui_page 'html/index.html'
@@ -23,10 +24,12 @@ client_scripts {
 }
 
 server_scripts {
+    '@oxmysql/lib/MySQL.lua',
     'server.lua'
 }
 
 files {
     'html/index.html',
-    'html/assets/*'
+    'html/assets/*',
+    'sql/mb_adminjail.sql'
 }

@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `mb_mb_adminjail` (
+CREATE TABLE IF NOT EXISTS `mb_adminjail` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `identifier` VARCHAR(100) NOT NULL,
   `name` VARCHAR(80) NOT NULL,

@@ -2,8 +2,8 @@ local ESX, QBCore = nil, nil
 local tabletOpen = false
 local isJailed = false
 local jailData = nil
-local playerReadySent = false
 local expirationNotified = false
+local lastJailCheckAt = 0
 
 local function initFramework()
     if Config.Framework == "ESX" then
@@ -353,22 +353,31 @@ CreateThread(function()
     end
 end)
 
+local function requestJailCheck()
+    local now = GetGameTimer()
+    if now - lastJailCheckAt < 3000 then return end
+    lastJailCheckAt = now
+    TriggerServerEvent('mb_adminjail:server:playerReady')
+end
+
 AddEventHandler('playerSpawned', function()
-    if not playerReadySent then
-        playerReadySent = true
-        TriggerServerEvent('mb_adminjail:server:playerReady')
-    end
+    SetTimeout((Config.RejoinCheckDelay or 5) * 1000, requestJailCheck)
 end)
 
 CreateThread(function()
-    Wait(5000)
-    if not playerReadySent then
-        playerReadySent = true
-        TriggerServerEvent('mb_adminjail:server:playerReady')
-    end
+    Wait(8000)
+    requestJailCheck()
 end)
 
--- ESC fallback if focus is somehow still open.
+if Config.Framework == 'ESX' then
+    RegisterNetEvent('esx:playerLoaded', function()
+        SetTimeout((Config.RejoinCheckDelay or 5) * 1000, requestJailCheck)
+    end)
+elseif Config.Framework == 'QBCore' then
+    RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+        SetTimeout((Config.RejoinCheckDelay or 5) * 1000, requestJailCheck)
+    end)
+end
 CreateThread(function()
     while true do
         if tabletOpen and IsControlJustReleased(0, 322) then
