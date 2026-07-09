@@ -350,9 +350,15 @@ button { cursor: pointer; background: none; border: none; }
     align-items: center;
     justify-content: center;
     padding: 3vh 3vw;
+    background: rgba(0, 0, 0, 0) !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+    pointer-events: none;
 }
 
-body.visible .app { display: flex; }
+body.visible .app {
+    display: flex;
+    pointer-events: auto;
+}
 
 .tablet {
     position: relative;
@@ -524,14 +530,21 @@ body.visible .app { display: flex; }
 
 /* ---------- MB HUD Patch: transparenter Hintergrund + mittig ---------- */
 html, body {
-    background: transparent !important;
-    background-color: transparent !important;
+    background: rgba(0, 0, 0, 0) !important;
+    background-color: rgba(0, 0, 0, 0) !important;
 }
 
 html.hud-visible,
 body.hud-visible {
-    background: transparent !important;
-    background-color: transparent !important;
+    background: rgba(0, 0, 0, 0) !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+body:not(.visible):not(.hud-visible) .app,
+body:not(.visible):not(.hud-visible) .modal-backdrop {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
 }
 
 body.hud-visible .app {
@@ -1094,6 +1107,7 @@ body[data-theme="light"] .icon-sun { display: none; }
     transform: translateX(-50%);
     display: none;
     z-index: 40;
+    pointer-events: none;
 }
 body.hud-visible .hud { display: block; }
 

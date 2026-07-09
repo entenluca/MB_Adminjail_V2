@@ -163,7 +163,8 @@ local function showJailHud()
     if Config.ShowJailTimerHud == false or not jailData then return end
 
     SendNUIMessage({
-        action = 'showJailHud',
+        action = 'enterJailHud',
+        ui = getUiConfig(),
         timeLeft = tonumber(jailData.timeLeft) or 0,
         originalTime = tonumber(jailData.originalTime) or tonumber(jailData.timeLeft) or 1,
         reason = jailData.reason or 'Kein Grund',
@@ -172,16 +173,18 @@ local function showJailHud()
 end
 
 local function hideJailHud()
-    SendNUIMessage({ action = 'hideJailHud' })
+    SendNUIMessage({ action = 'exitJailHud' })
+end
+
+local function ensureJailHudVisible()
+    if not isJailed or not jailData or Config.ShowJailTimerHud == false then return end
+    showJailHud()
 end
 
 local function startJail(data)
-    -- Falls der Spieler gerade ein NUI/Tablet offen hatte: sofort schließen,
-    -- Cursor entfernen und Game-Input wieder freigeben.
     tabletOpen = false
     SetNuiFocus(false, false)
     SetNuiFocusKeepInput(false)
-    SendNUIMessage({ action = 'close' })
 
     jailData = data or {}
     jailData.timeLeft = tonumber(jailData.timeLeft) or 0
@@ -191,7 +194,6 @@ local function startJail(data)
     isJailed = true
     expirationNotified = false
 
-    -- Manche NUI-Overlays geben den Cursor erst nach 1-2 Frames frei.
     CreateThread(function()
         for _ = 1, 12 do
             SetNuiFocus(false, false)
@@ -214,6 +216,14 @@ local function startJail(data)
     FreezeEntityPosition(ped, jailData.freezePlayer == true)
     teleportToCoords(jailData.jailCoords)
     showJailHud()
+
+    CreateThread(function()
+        for attempt = 1, 6 do
+            Wait(1000)
+            if not isJailed or not jailData then break end
+            ensureJailHudVisible()
+        end
+    end)
 end
 
 local function endJail(data)
@@ -221,10 +231,11 @@ local function endJail(data)
     isJailed = false
     jailData = nil
     expirationNotified = false
+    tabletOpen = false
     hideJailHud()
-    FreezeEntityPosition(ped, false)
     SetNuiFocus(false, false)
     SetNuiFocusKeepInput(false)
+    FreezeEntityPosition(ped, false)
 
     if data and data.releaseCoords then
         teleportToCoords(data.releaseCoords)
@@ -379,6 +390,17 @@ CreateThread(function()
             end
         else
             Wait(500)
+        end
+    end
+end)
+
+CreateThread(function()
+    while true do
+        if isJailed and jailData and Config.ShowJailTimerHud then
+            ensureJailHudVisible()
+            Wait(15000)
+        else
+            Wait(3000)
         end
     end
 end)

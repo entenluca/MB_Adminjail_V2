@@ -435,18 +435,30 @@ function renderLogs() {
 
 /* ---------- HUD ---------- */
 
+function resetNuiLayers() {
+    document.documentElement.classList.remove('hud-visible');
+    document.body.classList.remove('hud-visible', 'visible');
+    if (els.app) els.app.setAttribute('aria-hidden', 'true');
+    if (els.hud) els.hud.setAttribute('aria-hidden', 'true');
+    if (els.modal) {
+        els.modal.classList.remove('show');
+        els.modal.setAttribute('aria-hidden', 'true');
+    }
+    setHudBackground(true);
+}
+
 function updateHud(data = {}) {
     const timeLeft = Math.max(0, Number(data.timeLeft) || 0);
     const originalTime = Math.max(timeLeft, Number(data.originalTime) || timeLeft || 1);
     const progress = Math.max(0, Math.min(100, (timeLeft / originalTime) * 100));
 
-    els.hudTime.textContent = formatClock(timeLeft);
-    els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 24);
-    els.hudProgress.style.width = `${progress}%`;
+    if (els.hudTime) els.hudTime.textContent = formatClock(timeLeft);
+    if (els.hudAdmin) els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 24);
+    if (els.hudProgress) els.hudProgress.style.width = `${progress}%`;
 }
 
 function setHudBackground(transparent) {
-    const value = transparent ? 'transparent' : '';
+    const value = transparent ? 'rgba(0, 0, 0, 0)' : '';
     document.documentElement.style.background = value;
     document.documentElement.style.backgroundColor = value;
     document.body.style.background = value;
@@ -454,35 +466,45 @@ function setHudBackground(transparent) {
 }
 
 function showHud(data) {
+    if (data?.ui) applyUiConfig(data.ui);
+    resetNuiLayers();
     updateHud(data);
-    setHudBackground(true);
     document.documentElement.classList.add('hud-visible');
-    document.body.classList.remove('visible');
     document.body.classList.add('hud-visible');
-    els.hud.setAttribute('aria-hidden', 'false');
+    if (els.hud) els.hud.setAttribute('aria-hidden', 'false');
 }
 
 function hideHud() {
     document.documentElement.classList.remove('hud-visible');
     document.body.classList.remove('hud-visible');
+    if (els.hud) els.hud.setAttribute('aria-hidden', 'true');
     setHudBackground(true);
-    els.hud.setAttribute('aria-hidden', 'true');
+}
+
+function enterJailHud(data) {
+    showHud(data || {});
+}
+
+function exitJailHud() {
+    hideHud();
+    resetNuiLayers();
 }
 
 /* ---------- Öffnen / Schließen ---------- */
 
 function openTablet(ui) {
     if (ui) applyUiConfig(ui);
+    document.documentElement.classList.remove('hud-visible');
     document.body.classList.remove('hud-visible');
     document.body.classList.add('visible');
-    els.app.setAttribute('aria-hidden', 'false');
+    if (els.hud) els.hud.setAttribute('aria-hidden', 'true');
+    if (els.app) els.app.setAttribute('aria-hidden', 'false');
+    setHudBackground(true);
     refreshAll(false);
 }
 
 function closeTablet() {
-    document.body.classList.remove('visible');
-    els.app.setAttribute('aria-hidden', 'true');
-    closeModal();
+    resetNuiLayers();
     post('close');
 }
 
@@ -543,9 +565,8 @@ window.addEventListener('message', (event) => {
             applyUiConfig(data.ui || {});
             break;
         case 'close':
-            document.body.classList.remove('visible');
-            els.app.setAttribute('aria-hidden', 'true');
-            closeModal();
+            if (document.body.classList.contains('hud-visible')) break;
+            resetNuiLayers();
             break;
         case 'setPlayers':
             state.players = Array.isArray(data.players) ? data.players : [];
@@ -561,8 +582,17 @@ window.addEventListener('message', (event) => {
             renderLogs();
             break;
         case 'showJailHud': showHud(data); break;
-        case 'updateJailHud': updateHud(data); break;
+        case 'enterJailHud': enterJailHud(data); break;
+        case 'updateJailHud':
+            if ((Number(data.timeLeft) || 0) > 0) {
+                if (!document.body.classList.contains('hud-visible')) showHud(data);
+                else updateHud(data);
+            } else {
+                exitJailHud();
+            }
+            break;
         case 'hideJailHud': hideHud(); break;
+        case 'exitJailHud': exitJailHud(); break;
     }
 });
 
