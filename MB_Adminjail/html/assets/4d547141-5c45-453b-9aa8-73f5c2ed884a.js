@@ -469,11 +469,17 @@ function setHudBackground(transparent) {
 
 function showHud(data) {
     if (data?.ui) applyUiConfig(data.ui);
-    resetNuiLayers();
+
+    const tabletOpen = document.body.classList.contains('visible');
+    if (!tabletOpen) {
+        resetNuiLayers();
+    }
+
     updateHud(data);
     document.documentElement.classList.add('hud-visible');
     document.body.classList.add('hud-visible');
     if (els.hud) els.hud.setAttribute('aria-hidden', 'false');
+    setHudBackground(true);
 }
 
 function hideHud() {
@@ -494,19 +500,40 @@ function exitJailHud() {
 
 /* ---------- Öffnen / Schließen ---------- */
 
-function openTablet(ui) {
+function openTablet(ui, keepHud) {
     if (ui) applyUiConfig(ui);
-    document.documentElement.classList.remove('hud-visible');
-    document.body.classList.remove('hud-visible');
+
+    const shouldKeepHud = keepHud === true || document.body.classList.contains('hud-visible');
+    if (!shouldKeepHud) {
+        document.documentElement.classList.remove('hud-visible');
+        document.body.classList.remove('hud-visible');
+        if (els.hud) els.hud.setAttribute('aria-hidden', 'true');
+    } else if (els.hud) {
+        els.hud.setAttribute('aria-hidden', 'false');
+    }
+
     document.body.classList.add('visible');
-    if (els.hud) els.hud.setAttribute('aria-hidden', 'true');
     if (els.app) els.app.setAttribute('aria-hidden', 'false');
     setHudBackground(true);
     refreshAll(false);
 }
 
 function closeTablet() {
-    resetNuiLayers();
+    const keepHud = document.body.classList.contains('hud-visible');
+
+    document.body.classList.remove('visible');
+    if (els.app) els.app.setAttribute('aria-hidden', 'true');
+    closeModal();
+
+    if (keepHud) {
+        document.documentElement.classList.add('hud-visible');
+        document.body.classList.add('hud-visible');
+        if (els.hud) els.hud.setAttribute('aria-hidden', 'false');
+        setHudBackground(true);
+    } else {
+        resetNuiLayers();
+    }
+
     post('close');
 }
 
@@ -562,12 +589,19 @@ window.addEventListener('message', (event) => {
     const data = event.data || {};
 
     switch (data.action) {
-        case 'open': openTablet(data.ui); break;
+        case 'open': openTablet(data.ui, data.keepHud === true); break;
         case 'setUiConfig':
             applyUiConfig(data.ui || {});
             break;
         case 'close':
-            if (document.body.classList.contains('hud-visible')) break;
+            if (document.body.classList.contains('hud-visible')) {
+                document.body.classList.remove('visible');
+                if (els.app) els.app.setAttribute('aria-hidden', 'true');
+                closeModal();
+                if (els.hud) els.hud.setAttribute('aria-hidden', 'false');
+                setHudBackground(true);
+                break;
+            }
             resetNuiLayers();
             break;
         case 'setPlayers':

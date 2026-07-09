@@ -548,7 +548,16 @@ body:not(.visible):not(.hud-visible) .modal-backdrop {
     pointer-events: none !important;
 }
 
-body.hud-visible .app {
+/* Nur HUD aktiv → Tablet verstecken */
+body.hud-visible:not(.visible) .app {
+    display: none !important;
+}
+
+body.hud-visible:not(.visible) .tablet,
+body.hud-visible:not(.visible) .tablet-statusbar,
+body.hud-visible:not(.visible) .tablet-side-buttons,
+body.hud-visible:not(.visible) .modal-backdrop,
+body.hud-visible:not(.visible) .toasts {
     display: none !important;
 }
 
@@ -556,12 +565,10 @@ body.hud-visible .hud {
     display: block !important;
 }
 
-body.hud-visible .tablet,
-body.hud-visible .tablet-statusbar,
-body.hud-visible .tablet-side-buttons,
-body.hud-visible .modal-backdrop,
-body.hud-visible .toasts {
-    display: none !important;
+/* Tablet + Spieler-HUD gleichzeitig (z. B. Admin im Jail) */
+body.visible.hud-visible .hud {
+    display: block !important;
+    z-index: 70;
 }
 
 

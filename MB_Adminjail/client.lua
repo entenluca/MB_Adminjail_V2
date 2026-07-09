@@ -112,13 +112,21 @@ local function closeTablet()
     SetNuiFocus(false, false)
     SetNuiFocusKeepInput(false)
     SendNUIMessage({ action = 'close' })
+
+    if isJailed and jailData then
+        SetTimeout(150, showJailHud)
+    end
 end
 
 local function openTablet()
     tabletOpen = true
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(false)
-    SendNUIMessage({ action = 'open', ui = getUiConfig() })
+    SendNUIMessage({
+        action = 'open',
+        ui = getUiConfig(),
+        keepHud = isJailed
+    })
     TriggerServerEvent('mb_adminjail:server:requestPlayers')
     TriggerServerEvent('mb_adminjail:server:requestActiveJails')
 end
