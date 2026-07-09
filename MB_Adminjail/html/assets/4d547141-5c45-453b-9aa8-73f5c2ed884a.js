@@ -504,12 +504,15 @@ function openTablet(ui, keepHud) {
     if (ui) applyUiConfig(ui);
 
     const shouldKeepHud = keepHud === true || document.body.classList.contains('hud-visible');
-    if (!shouldKeepHud) {
+
+    if (shouldKeepHud) {
+        document.documentElement.classList.add('hud-visible');
+        document.body.classList.add('hud-visible');
+        if (els.hud) els.hud.setAttribute('aria-hidden', 'false');
+    } else {
         document.documentElement.classList.remove('hud-visible');
         document.body.classList.remove('hud-visible');
         if (els.hud) els.hud.setAttribute('aria-hidden', 'true');
-    } else if (els.hud) {
-        els.hud.setAttribute('aria-hidden', 'false');
     }
 
     document.body.classList.add('visible');
@@ -589,7 +592,10 @@ window.addEventListener('message', (event) => {
     const data = event.data || {};
 
     switch (data.action) {
-        case 'open': openTablet(data.ui, data.keepHud === true); break;
+        case 'open':
+            openTablet(data.ui, data.keepHud === true);
+            if (data.keepHud === true) updateHud(data);
+            break;
         case 'setUiConfig':
             applyUiConfig(data.ui || {});
             break;

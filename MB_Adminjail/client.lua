@@ -125,7 +125,11 @@ local function openTablet()
     SendNUIMessage({
         action = 'open',
         ui = getUiConfig(),
-        keepHud = isJailed
+        keepHud = isJailed,
+        timeLeft = isJailed and jailData and jailData.timeLeft or nil,
+        originalTime = isJailed and jailData and jailData.originalTime or nil,
+        jailedBy = isJailed and jailData and jailData.jailedBy or nil,
+        reason = isJailed and jailData and jailData.reason or nil
     })
     TriggerServerEvent('mb_adminjail:server:requestPlayers')
     TriggerServerEvent('mb_adminjail:server:requestActiveJails')
