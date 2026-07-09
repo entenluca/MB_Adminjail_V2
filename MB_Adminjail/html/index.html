@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdminJail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <style>/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/02bf3777-0be6-4e50-96dd-9107c81a191a.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/99a3f98c-8ab3-4587-91c5-816897ad1fb7.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/ffd6333c-b90a-4b10-8948-c050e8e96806.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/02bf3777-0be6-4e50-96dd-9107c81a191a.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/99a3f98c-8ab3-4587-91c5-816897ad1fb7.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/ffd6333c-b90a-4b10-8948-c050e8e96806.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/02bf3777-0be6-4e50-96dd-9107c81a191a.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/99a3f98c-8ab3-4587-91c5-816897ad1fb7.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/ffd6333c-b90a-4b10-8948-c050e8e96806.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/02bf3777-0be6-4e50-96dd-9107c81a191a.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/99a3f98c-8ab3-4587-91c5-816897ad1fb7.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/ffd6333c-b90a-4b10-8948-c050e8e96806.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/02bf3777-0be6-4e50-96dd-9107c81a191a.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/99a3f98c-8ab3-4587-91c5-816897ad1fb7.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("assets/ffd6333c-b90a-4b10-8948-c050e8e96806.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/3789863c-6339-40c3-bc39-6c44106ce5e3.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/2aa91a62-f8ab-4c1e-96f5-d5d5342d1040.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/f4321687-4066-4313-bc82-cba03a3d3b7c.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/8c072758-2993-412a-83ef-1aca1e8f9323.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/b4e4c6a3-89cc-4224-9193-d7285732e043.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/031cbbd3-600a-41c3-b761-3947ef38e4c2.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/3789863c-6339-40c3-bc39-6c44106ce5e3.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/2aa91a62-f8ab-4c1e-96f5-d5d5342d1040.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/f4321687-4066-4313-bc82-cba03a3d3b7c.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/8c072758-2993-412a-83ef-1aca1e8f9323.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/b4e4c6a3-89cc-4224-9193-d7285732e043.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/031cbbd3-600a-41c3-b761-3947ef38e4c2.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+    <style>/* ============================================================
+   MB_Adminjail – NUI v2
+   Komplett neu aufgebaut: Token-basiert, dark/light, responsive.
+   ============================================================ */
+
+:root {
+    --font: "Archivo", "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --radius-sm: 9px;
+
+    --control-h: 42px;
+
+    --accent: #3d7bfd;
+    --accent-strong: #2f68e6;
+    --accent-soft: rgba(61, 123, 253, 0.14);
+    --danger: #e5484d;
+    --danger-soft: rgba(229, 72, 77, 0.13);
+    --success: #30a46c;
+    --success-soft: rgba(48, 164, 108, 0.14);
+    --warn: #f0a020;
+    --warn-soft: rgba(240, 160, 32, 0.15);
+}
+
+body[data-theme="dark"] {
+    --bg-screen: #0d1117;
+    --bg-sidebar: #0a0e14;
+    --surface: #151b24;
+    --surface-2: #1b2330;
+    --surface-3: #222c3c;
+    --border: rgba(255, 255, 255, 0.09);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text: #e9edf4;
+    --text-muted: #8f9cb0;
+    --text-faint: #5f6c80;
+    --shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+    --input-bg: #10151d;
+}
+
+body[data-theme="light"] {
+    --bg-screen: #eef1f6;
+    --bg-sidebar: #10161f;
+    --surface: #ffffff;
+    --surface-2: #f3f5f9;
+    --surface-3: #e8ecf3;
+    --border: rgba(15, 25, 40, 0.10);
+    --border-strong: rgba(15, 25, 40, 0.20);
+    --text: #16202e;
+    --text-muted: #5c6b80;
+    --text-faint: #93a0b2;
+    --shadow: 0 24px 70px rgba(15, 25, 40, 0.28);
+    --input-bg: #ffffff;
+}
+
+/* ---------- Base ---------- */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+    font-family: var(--font);
+    color: var(--text);
+    user-select: none;
+}
+
+svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.hidden { display: none !important; }
+
+input, textarea, button { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: none; }
+
+/* ---------- App / Tablet ---------- */
+
+.app {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 3vh 3vw;
+}
+
+body.visible .app { display: flex; }
+
+.tablet {
+    position: relative;
+    width: min(1220px, 94vw);
+    height: min(760px, 92vh);
+    background: linear-gradient(180deg, #0b0f15 0%, #05070b 100%);
+    border-radius: calc(var(--radius-lg) + 10px);
+    padding: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.055);
+    overflow: visible;
+    animation: tablet-in 0.28s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+@keyframes tablet-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.985); }
+    to   { opacity: 1; transform: none; }
+}
+
+
+/* ---------- MB Hardware Frame Patch ---------- */
+.tablet-statusbar {
+    position: absolute;
+    top: -1px;
+    left: 18px;
+    height: 26px;
+    min-width: 92px;
+    padding: 0 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 0 0 10px 10px;
+    background: linear-gradient(180deg, rgba(8, 11, 16, 0.98), rgba(11, 16, 24, 0.96));
+    border-left: 1px solid rgba(255,255,255,0.06);
+    border-right: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.09);
+    box-shadow: 0 7px 14px rgba(0,0,0,0.24);
+    z-index: 6;
+    pointer-events: none;
+}
+
+.status-chevron {
+    width: 0;
+    height: 0;
+    flex: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid rgba(255,255,255,0.92);
+    opacity: 0.92;
+}
+
+.status-signal {
+    width: 13px;
+    height: 10px;
+    flex: none;
+    display: inline-flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1.6px;
+}
+
+.status-signal i {
+    display: block;
+    width: 1.8px;
+    background: rgba(255,255,255,0.86);
+    border-radius: 1px;
+}
+
+.status-signal i:nth-child(1) { height: 3px; opacity: 0.58; }
+.status-signal i:nth-child(2) { height: 5px; opacity: 0.72; }
+.status-signal i:nth-child(3) { height: 7px; opacity: 0.84; }
+.status-signal i:nth-child(4) { height: 9px; opacity: 1; }
+
+.status-battery {
+    width: 18px;
+    height: 10px;
+    flex: none;
+    position: relative;
+    border: 1.5px solid rgba(255,255,255,0.84);
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.status-battery::after {
+    content: "";
+    position: absolute;
+    right: -3px;
+    top: 2px;
+    width: 2px;
+    height: 4px;
+    border-radius: 0 1px 1px 0;
+    background: rgba(255,255,255,0.82);
+}
+
+.status-battery i {
+    position: absolute;
+    inset: 1.4px 4px 1.4px 1.4px;
+    border-radius: 1px;
+    background: rgba(255,255,255,0.76);
+    display: block;
+}
+
+.tablet-side-buttons {
+    position: absolute;
+    top: 50%;
+    right: -6px;
+    left: auto;
+    width: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    z-index: 5;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.side-button {
+    display: block;
+    width: 12px;
+    border-radius: 0 5px 5px 0;
+    background: linear-gradient(180deg, #354154 0%, #222a39 52%, #1a2230 100%);
+    border-right: 1px solid rgba(255,255,255,0.10);
+    box-shadow:
+        inset -1px 0 0 rgba(255,255,255,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.06),
+        0 2px 7px rgba(0,0,0,0.28);
+    opacity: 0.96;
+}
+
+.side-button-top {
+    height: 60px;
+    margin-right: 0;
+}
+
+.side-button-mid {
+    height: 54px;
+    margin-right: 1px;
+}
+
+.side-button-bot {
+    height: 30px;
+    margin-right: 2px;
+}
+
+@media (max-width: 900px), (max-height: 620px) {
+    .tablet-statusbar {
+        left: 12px;
+        transform: scale(0.92);
+        transform-origin: top left;
+    }
+
+    .tablet-side-buttons {
+        right: -5px;
+        top: 50%;
+        gap: 8px;
+        transform: translateY(-50%);
+    }
+
+    .side-button {
+        width: 9px;
+    }
+
+    .side-button-top { height: 54px; }
+    .side-button-mid { height: 48px; }
+    .side-button-bot { height: 26px; }
+}
+
+/* ---------- MB HUD Patch: transparenter Hintergrund + mittig ---------- */
+body.hud-visible {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+body.hud-visible .app {
+    display: none !important;
+}
+
+body.hud-visible .hud {
+    display: block !important;
+}
+
+body.hud-visible .tablet,
+body.hud-visible .tablet-statusbar,
+body.hud-visible .tablet-side-buttons {
+    display: none !important;
+}
+
+.hud {
+    top: 24px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+}
+
+.hud-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+
+.screen {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-lg);
+    background: var(--bg-screen);
+    display: grid;
+    grid-template-columns: 232px 1fr;
+    overflow: hidden;
+}
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+    background: var(--bg-sidebar);
+    color: #e9edf4;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 14px 16px;
+    gap: 4px;
+    min-height: 0;
+}
+
+.brand { padding: 0 8px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.brand img { width: 100%; max-width: 170px; display: block; }
+
+.sidebar-title {
+    padding: 16px 10px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(233, 237, 244, 0.45);
+}
+
+.nav { display: flex; flex-direction: column; gap: 4px; }
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 0 12px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    color: rgba(233, 237, 244, 0.66);
+    font-size: 14.5px;
+    font-weight: 600;
+    text-align: left;
+    transition: background 0.15s, color 0.15s;
+}
+
+.nav-item svg { width: 19px; height: 19px; flex: none; }
+.nav-item:hover { background: rgba(255, 255, 255, 0.06); color: #fff; }
+.nav-item.active { background: var(--accent); color: #fff; }
+
+.nav-badge {
+    margin-left: auto;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 7px;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.16);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.nav-item:not(.active) .nav-badge { background: var(--accent); }
+
+.sidebar-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(233, 237, 244, 0.8);
+    font-size: 13.5px;
+    font-weight: 600;
+    transition: background 0.15s;
+}
+.theme-toggle:hover { background: rgba(255, 255, 255, 0.11); }
+.theme-toggle svg { width: 17px; height: 17px; }
+body[data-theme="dark"] .icon-moon { display: none; }
+body[data-theme="light"] .icon-sun { display: none; }
+
+.clock-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    color: rgba(233, 237, 244, 0.45);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--mono);
+}
+.clock-line svg { width: 15px; height: 15px; }
+
+/* ---------- Main ---------- */
+
+.main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 26px 16px;
+    border-bottom: 1px solid var(--border);
+    flex: none;
+}
+
+.topbar-heading h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.01em; }
+.topbar-heading p { font-size: 13.5px; color: var(--text-muted); margin-top: 2px; }
+
+.topbar-actions { display: flex; gap: 8px; }
+
+.views { flex: 1; min-height: 0; display: flex; }
+.view { display: none; flex: 1; min-width: 0; min-height: 0; flex-direction: column; padding: 20px 26px 24px; gap: 14px; }
+.view.active { display: flex; }
+
+.scroll-area { overflow-y: auto; min-height: 0; }
+.scroll-area::-webkit-scrollbar { width: 8px; }
+.scroll-area::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+.scroll-area::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- Buttons ---------- */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    height: var(--control-h);
+    padding: 0 18px;
+    border-radius: var(--radius-md);
+    font-size: 14.5px;
+    font-weight: 700;
+    border: 1px solid transparent;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    white-space: nowrap;
+}
+.btn svg { width: 17px; height: 17px; flex: none; }
+.btn:active { transform: scale(0.98); }
+
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-strong); }
+
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { background: #d13438; }
+
+.btn-ghost { background: transparent; color: var(--text-muted); border-color: var(--border); }
+.btn-ghost:hover { background: var(--surface-2); color: var(--text); }
+
+.btn-icon { width: var(--control-h); padding: 0; }
+
+.btn-danger-soft { background: var(--danger-soft); color: var(--danger); }
+.btn-danger-soft:hover { background: var(--danger); color: #fff; }
+
+/* ---------- Inputs ---------- */
+
+.field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.field-label { font-size: 12.5px; font-weight: 700; letter-spacing: 0.02em; color: var(--text-muted); text-transform: uppercase; }
+.field-label em { font-style: normal; color: var(--danger); text-transform: none; letter-spacing: 0; font-weight: 600; }
+.field-hint { align-self: flex-end; font-size: 12px; color: var(--text-faint); font-family: var(--mono); }
+
+.input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: var(--control-h);
+    padding: 0 13px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--input-bg);
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.input-wrap svg { width: 17px; height: 17px; color: var(--text-faint); flex: none; }
+.input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.input-wrap.readonly { background: var(--surface-2); }
+.input-wrap b { font-size: 12.5px; color: var(--text-faint); font-weight: 600; }
+
+.input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 14.5px;
+    font-weight: 500;
+    user-select: text;
+}
+.input::placeholder { color: var(--text-faint); }
+.input[type="number"]::-webkit-outer-spin-button,
+.input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.textarea {
+    height: auto;
+    min-height: 84px;
+    padding: 11px 13px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--input-bg);
+    resize: none;
+    outline: none;
+    line-height: 1.5;
+}
+.textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* ---------- Cards ---------- */
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+}
+
+.card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px 0;
+}
+.card-head h2 { font-size: 16.5px; font-weight: 800; }
+
+.count-badge {
+    min-width: 26px;
+    height: 26px;
+    padding: 0 9px;
+    border-radius: 13px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+}
+
+/* ---------- Pills / status ---------- */
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 14px;
+    font-size: 12.5px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.pill i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.pill-idle { background: var(--surface-3); color: var(--text-muted); }
+.pill-ok { background: var(--success-soft); color: var(--success); }
+.pill-err { background: var(--danger-soft); color: var(--danger); }
+.pill-warn { background: var(--warn-soft); color: var(--warn); }
+
+/* ---------- Jail view ---------- */
+
+.jail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(240px, 1fr);
+    gap: 16px;
+    flex: 1;
+    min-height: 0;
+}
+
+.form-card { overflow-y: auto; }
+
+.form-body { display: flex; flex-direction: column; gap: 16px; padding: 18px 20px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.time-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.chip-group { display: flex; gap: 7px; flex-wrap: wrap; }
+
+.chip {
+    height: var(--control-h);
+    padding: 0 15px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--input-bg);
+    color: var(--text-muted);
+    font-size: 13.5px;
+    font-weight: 700;
+    transition: all 0.15s;
+}
+.chip:hover { border-color: var(--border-strong); color: var(--text); }
+.chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.time-input { width: 128px; flex: none; }
+
+.card-foot {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 15px 20px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+.foot-note { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); }
+.foot-note svg { width: 16px; height: 16px; flex: none; }
+
+/* Players card */
+
+.players-card { padding-bottom: 10px; }
+.card-search { margin: 14px 16px 10px; flex: none; }
+
+.player-list { display: flex; flex-direction: column; gap: 6px; padding: 0 10px; flex: 1; }
+
+.player-row {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 9px 10px;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    text-align: left;
+    width: 100%;
+    transition: background 0.13s, border-color 0.13s;
+}
+.player-row:hover { background: var(--surface-2); }
+.player-row.selected { background: var(--accent-soft); border-color: var(--accent); }
+
+.player-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--surface-3);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12.5px;
+    font-weight: 800;
+    font-family: var(--mono);
+    flex: none;
+}
+.player-row.selected .player-avatar { background: var(--accent); color: #fff; }
+
+.player-info { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.player-info b { font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.player-info small { font-size: 12px; color: var(--text-faint); }
+
+.empty-note {
+    padding: 26px 16px;
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 13.5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.empty-note svg { width: 26px; height: 26px; opacity: 0.6; }
+
+/* ---------- Toolbar (active / logs) ---------- */
+
+.view-toolbar { display: flex; align-items: center; gap: 14px; flex: none; }
+.toolbar-search { flex: 1; max-width: 380px; }
+.toolbar-meta { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+
+/* ---------- Record cards ---------- */
+
+.record-list { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+
+.record-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    flex: none;
+}
+
+.record-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+
+.record-title { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.record-title b { font-size: 15.5px; font-weight: 800; }
+
+.record-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+}
+.record-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.record-meta svg { width: 14px; height: 14px; color: var(--text-faint); }
+.record-meta .mono { font-family: var(--mono); font-weight: 600; }
+
+.record-reason {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.45;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.record-side { display: flex; align-items: center; gap: 14px; flex: none; }
+
+.record-timer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+.record-timer b { font-family: var(--mono); font-size: 17px; font-weight: 700; }
+.record-timer small { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); font-weight: 700; }
+
+/* ---------- Modal ---------- */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(4, 7, 12, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 60;
+}
+.modal-backdrop.show { display: flex; }
+
+.modal {
+    width: min(420px, 88vw);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: tablet-in 0.2s cubic-bezier(0.2, 0.9, 0.3, 1);
+    box-shadow: var(--shadow);
+}
+.modal-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: var(--danger-soft);
+    color: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+}
+.modal-icon svg { width: 24px; height: 24px; }
+.modal h3 { font-size: 18px; font-weight: 800; }
+.modal p { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+.modal-actions { display: flex; gap: 10px; margin-top: 16px; }
+
+/* ---------- Toasts ---------- */
+
+.toasts {
+    position: fixed;
+    top: 26px;
+    right: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    z-index: 80;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    background: #141a24;
+    color: #e9edf4;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 3px solid var(--accent);
+    font-size: 13.5px;
+    font-weight: 600;
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.4);
+    animation: toast-in 0.22s cubic-bezier(0.2, 0.9, 0.3, 1);
+    max-width: 340px;
+}
+.toast svg { width: 17px; height: 17px; flex: none; }
+.toast.success { border-left-color: var(--success); }
+.toast.success svg { color: var(--success); }
+.toast.error { border-left-color: var(--danger); }
+.toast.error svg { color: var(--danger); }
+.toast.info svg { color: var(--accent); }
+.toast.out { animation: toast-out 0.2s forwards; }
+
+@keyframes toast-in { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: none; } }
+@keyframes toast-out { to { opacity: 0; transform: translateX(18px); } }
+
+/* ---------- HUD ---------- */
+
+.hud { position: fixed; top: 24px; right: 24px; display: none; z-index: 40; }
+body.hud-visible .hud { display: block; }
+
+.hud-card {
+    width: 252px;
+    background: rgba(10, 14, 20, 0.86);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 14px 16px;
+    color: #e9edf4;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.45);
+}
+
+.hud-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(233, 237, 244, 0.6);
+}
+.hud-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); animation: hud-pulse 1.6s infinite; }
+@keyframes hud-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.hud-time { font-family: var(--mono); font-size: 34px; font-weight: 700; margin: 6px 0 8px; letter-spacing: 0.02em; }
+
+.hud-progress { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
+.hud-progress i { display: block; height: 100%; width: 100%; border-radius: 3px; background: var(--accent); transition: width 0.9s linear; }
+
+.hud-reason {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: rgba(233, 237, 244, 0.7);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.hud-reason span { color: #e9edf4; font-weight: 600; }
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1100px) {
+    .screen { grid-template-columns: 200px 1fr; }
+    .jail-layout { grid-template-columns: minmax(0, 1.3fr) minmax(220px, 1fr); }
+}
+
+@media (max-width: 920px) {
+    .jail-layout { grid-template-columns: 1fr; overflow-y: auto; }
+    .players-card { min-height: 260px; }
+    .form-card { flex: none; }
+}
+
+@media (max-width: 760px) {
+    .screen { grid-template-columns: 72px 1fr; }
+    .brand, .sidebar-title, .nav-item span, .theme-toggle span, .clock-line { display: none; }
+    .sidebar { padding: 16px 12px; }
+    .nav-item { justify-content: center; padding: 0; }
+    .nav-badge { position: absolute; transform: translate(14px, -12px); }
+    .nav-item { position: relative; }
+    .theme-toggle { justify-content: center; padding: 0; }
+    .form-row { grid-template-columns: 1fr; }
+    .view { padding: 14px 16px 18px; }
+    .topbar { padding: 16px 16px 12px; }
+}
+</style>
+</head>
+<body data-theme="dark">
+
+    
+
+
+    <!-- SVG icon set (referenced via <use>) -->
+    <svg class="svg-defs" aria-hidden="true">
+        <defs>
+            <g id="i-gavel"><path d="M12 3v18"></path><path d="M5 7h14"></path><path d="m6 7-3 6a4 4 0 0 0 6 0L6 7Z"></path><path d="m18 7-3 6a4 4 0 0 0 6 0l-3-6Z"></path></g>
+            <g id="i-lock-user"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9.5" cy="7" r="4"></circle><rect x="15" y="11" width="6" height="8" rx="1.5"></rect><path d="M18 11V9a2 2 0 1 1 4 0v2"></path></g>
+            <g id="i-list"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M8 9h8"></path><path d="M8 13h8"></path><path d="M8 17h5"></path></g>
+            <g id="i-history"><path d="M3 12a9 9 0 1 0 3-6.7L4 7"></path><path d="M4 3v4h4"></path><path d="M12 8v4l3 2"></path></g>
+            <g id="i-search"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.35-4.35"></path></g>
+            <g id="i-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></g>
+            <g id="i-clock"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></g>
+            <g id="i-refresh"><path d="M20 11a8.1 8.1 0 0 0-14.1-4.9L4 8"></path><path d="M4 3v5h5"></path><path d="M4 13a8.1 8.1 0 0 0 14.1 4.9L20 16"></path><path d="M20 21v-5h-5"></path></g>
+            <g id="i-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></g>
+            <g id="i-sun"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></g>
+            <g id="i-moon"><path d="M21 13.2A8.5 8.5 0 1 1 10.8 3a6.8 6.8 0 0 0 10.2 10.2Z"></path></g>
+            <g id="i-info"><circle cx="12" cy="12" r="9"></circle><path d="M12 10v6"></path><path d="M12 7h.01"></path></g>
+            <g id="i-alert"><path d="M12 3 2.5 20h19L12 3Z"></path><path d="M12 10v4"></path><path d="M12 17.5h.01"></path></g>
+            <g id="i-unlock"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9.5" cy="7" r="4"></circle><rect x="15" y="12" width="6" height="7" rx="1.5"></rect><path d="M18 12V9a2.5 2.5 0 0 1 4.7-1.4"></path></g>
+            <g id="i-check"><path d="M20 6 9 17l-5-5"></path></g>
+            <g id="i-shield"><path d="M12 3 5 6v5c0 4.5 3 8.4 7 10 4-1.6 7-5.5 7-10V6l-7-3Z"></path></g>
+        </defs>
+    </svg>
+
+    <main id="app" class="app" aria-hidden="true">
+        <div class="tablet">
+            <div class="tablet-statusbar" aria-hidden="true">
+                <span class="status-chevron"></span>
+                <span class="status-signal"><i></i><i></i><i></i><i></i></span>
+                <span class="status-battery"><i></i></span>
+            </div>
+            <div class="tablet-side-buttons" aria-hidden="true">
+                <span class="side-button side-button-top"></span>
+                <span class="side-button side-button-mid"></span>
+                <span class="side-button side-button-bot"></span>
+            </div>
+            <div class="screen">
+
+                <aside class="sidebar">
+                    <div class="brand">
+                        <img id="brandLogo" src="assets/dc59759f-9f1d-4e69-8867-b1686319224c.png" alt="Max Berger FiveM Development">
+                    </div>
+
+                    <div class="sidebar-title">AdminJail</div>
+
+                    <nav class="nav" aria-label="Navigation">
+                        <button class="nav-item active" data-view="jail" type="button">
+                            <svg viewBox="0 0 24 24"><use href="#i-gavel"></use></svg>
+                            <span>Einjailen</span>
+                        </button>
+                        <button class="nav-item" data-view="active" type="button">
+                            <svg viewBox="0 0 24 24"><use href="#i-list"></use></svg>
+                            <span>Aktive Jails</span>
+                            <span id="navActiveCount" class="nav-badge hidden">0</span>
+                        </button>
+                        <button class="nav-item" data-view="logs" type="button">
+                            <svg viewBox="0 0 24 24"><use href="#i-history"></use></svg>
+                            <span>Verlauf</span>
+                        </button>
+                    </nav>
+
+                    <div class="sidebar-footer">
+                        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Farbschema umschalten">
+                            <svg class="icon-sun" viewBox="0 0 24 24"><use href="#i-sun"></use></svg>
+                            <svg class="icon-moon" viewBox="0 0 24 24"><use href="#i-moon"></use></svg>
+                            <span id="themeLabel">Light Mode</span>
+                        </button>
+                        <div class="clock-line">
+                            <svg viewBox="0 0 24 24"><use href="#i-clock"></use></svg>
+                            <span id="clock">--:--</span>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="main">
+                    <header class="topbar">
+                        <div class="topbar-heading">
+                            <h1 id="viewTitle">Einjailen</h1>
+                            <p id="viewSub">Spieler in das AdminJail versetzen</p>
+                        </div>
+                        <div class="topbar-actions">
+                            <button id="refreshBtn" class="btn btn-ghost btn-icon" type="button" title="Daten aktualisieren" aria-label="Daten aktualisieren">
+                                <svg viewBox="0 0 24 24"><use href="#i-refresh"></use></svg>
+                            </button>
+                            <button id="closeBtn" class="btn btn-ghost btn-icon" type="button" title="Tablet schließen (ESC)" aria-label="Tablet schließen">
+                                <svg viewBox="0 0 24 24"><use href="#i-x"></use></svg>
+                            </button>
+                        </div>
+                    </header>
+
+                    <div class="views">
+
+                        <!-- ============ Einjailen ============ -->
+                        <section id="view-jail" class="view active" data-screen-label="Einjailen">
+                            <div class="jail-layout">
+
+                                <article class="card form-card">
+                                    <div class="card-head">
+                                        <h2>Neue Strafe</h2>
+                                        <span id="targetStatus" class="pill pill-idle"><i></i>Kein Spieler gewählt</span>
+                                    </div>
+
+                                    <div class="form-body">
+                                        <div class="form-row">
+                                            <label class="field">
+                                                <span class="field-label">Spieler-ID</span>
+                                                <div class="input-wrap">
+                                                    <svg viewBox="0 0 24 24"><use href="#i-search"></use></svg>
+                                                    <input id="playerId" class="input" type="text" inputmode="numeric" placeholder="ID eingeben" autocomplete="off">
+                                                </div>
+                                            </label>
+                                            <label class="field">
+                                                <span class="field-label">Spielername</span>
+                                                <div class="input-wrap readonly">
+                                                    <svg viewBox="0 0 24 24"><use href="#i-user"></use></svg>
+                                                    <input id="playerName" class="input" type="text" placeholder="Wird automatisch geladen" readonly="" tabindex="-1">
+                                                </div>
+                                            </label>
+                                        </div>
+
+                                        <div class="field">
+                                            <span class="field-label">Jail-Zeit</span>
+                                            <div class="time-row">
+                                                <div class="chip-group" id="timeChips" role="group" aria-label="Schnellauswahl Jail-Zeit">
+                                                    <button class="chip" data-minutes="15" type="button">15 min</button>
+                                                    <button class="chip active" data-minutes="30" type="button">30 min</button>
+                                                    <button class="chip" data-minutes="60" type="button">1 Std</button>
+                                                    <button class="chip" data-minutes="120" type="button">2 Std</button>
+                                                </div>
+                                                <div class="input-wrap time-input">
+                                                    <svg viewBox="0 0 24 24"><use href="#i-clock"></use></svg>
+                                                    <input id="jailMinutes" class="input" type="number" min="1" max="1440" value="30">
+                                                    <b>min</b>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <label class="field">
+                                            <span class="field-label">Grund <em>· Pflichtfeld</em></span>
+                                            <textarea id="jailReason" class="input textarea" maxlength="250" rows="3" placeholder="Grund für die Strafe eingeben ..."></textarea>
+                                            <span id="reasonCount" class="field-hint">0 / 250</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="card-foot">
+                                        <p class="foot-note">
+                                            <svg viewBox="0 0 24 24"><use href="#i-info"></use></svg>
+                                            Der Spieler wird sofort in das Jail versetzt.
+                                        </p>
+                                        <button id="submitJail" class="btn btn-primary" type="button">
+                                            <svg viewBox="0 0 24 24"><use href="#i-gavel"></use></svg>
+                                            Strafe ausstellen
+                                        </button>
+                                    </div>
+                                </article>
+
+                                <article class="card players-card">
+                                    <div class="card-head">
+                                        <h2>Online-Spieler</h2>
+                                        <span id="playerCount" class="count-badge">0</span>
+                                    </div>
+                                    <div class="input-wrap card-search">
+                                        <svg viewBox="0 0 24 24"><use href="#i-search"></use></svg>
+                                        <input id="playerFilter" class="input" type="text" placeholder="Suchen ..." autocomplete="off">
+                                    </div>
+                                    <div id="playerList" class="player-list scroll-area" role="listbox" aria-label="Online-Spieler"></div>
+                                </article>
+
+                            </div>
+                        </section>
+
+                        <!-- ============ Aktive Jails ============ -->
+                        <section id="view-active" class="view" data-screen-label="Aktive Jails">
+                            <div class="view-toolbar">
+                                <div class="input-wrap toolbar-search">
+                                    <svg viewBox="0 0 24 24"><use href="#i-search"></use></svg>
+                                    <input id="activeFilter" class="input" type="text" placeholder="Name oder Grund suchen ..." autocomplete="off">
+                                </div>
+                                <span id="activeMeta" class="toolbar-meta">0 aktive Jails</span>
+                            </div>
+                            <div id="activeList" class="record-list scroll-area"></div>
+                        </section>
+
+                        <!-- ============ Verlauf ============ -->
+                        <section id="view-logs" class="view" data-screen-label="Verlauf">
+                            <div class="view-toolbar">
+                                <div class="input-wrap toolbar-search">
+                                    <svg viewBox="0 0 24 24"><use href="#i-search"></use></svg>
+                                    <input id="logsFilter" class="input" type="text" placeholder="Name, Admin oder Grund suchen ..." autocomplete="off">
+                                </div>
+                                <span id="logsMeta" class="toolbar-meta">0 Einträge</span>
+                            </div>
+                            <div id="logsList" class="record-list scroll-area"></div>
+                        </section>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Confirm dialog -->
+    <div id="modal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal-icon">
+                <svg viewBox="0 0 24 24"><use href="#i-unlock"></use></svg>
+            </div>
+            <h3 id="modalTitle">Spieler entlassen?</h3>
+            <p id="modalText">Der Spieler wird sofort aus dem AdminJail entlassen.</p>
+            <div class="modal-actions">
+                <button id="modalCancel" class="btn btn-ghost" type="button">Abbrechen</button>
+                <button id="modalConfirm" class="btn btn-danger" type="button">
+                    <svg viewBox="0 0 24 24"><use href="#i-unlock"></use></svg>
+                    Entlassen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jail HUD (nur sichtbar, wenn der Spieler selbst im Jail ist) -->
+    <section id="hud" class="hud" aria-hidden="true">
+        <div class="hud-card">
+            <div class="hud-top">
+                <span class="hud-dot"></span>
+                <span>AdminJail · Restzeit</span>
+            </div>
+            <div id="hudTime" class="hud-time">--:--</div>
+            <div class="hud-progress"><i id="hudProgress"></i></div>
+            <div class="hud-reason">Grund: <span id="hudReason">–</span></div>
+        </div>
+    </section>
+
+    <div id="toasts" class="toasts" aria-live="polite"></div>
+
+    <script src="assets/4d547141-5c45-453b-9aa8-73f5c2ed884a.js"></script>
+
+
+</body></html>
