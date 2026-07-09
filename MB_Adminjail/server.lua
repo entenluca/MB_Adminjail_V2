@@ -669,6 +669,25 @@ local function finishJail(identifier, targetSrc, releasedByName, releasedByIdent
     })
 end
 
+local function isValidJailReason(reason)
+    reason = trim(reason)
+    if reason == '' then return false, 'Du musst einen Grund angeben.' end
+
+    local minLength = math.max(1, tonumber(Config.MinJailReasonLength) or 5)
+    if #reason < minLength then
+        return false, ('Der Grund muss mindestens %s Zeichen haben.'):format(minLength)
+    end
+
+    local lowered = reason:lower()
+    for _, blocked in ipairs(Config.BlockedJailReasons or {}) do
+        if lowered == tostring(blocked):lower() then
+            return false, 'Bitte gib einen echten Grund an (kein Test-Text).'
+        end
+    end
+
+    return true
+end
+
 local function jailPlayer(target, adminSrc, minutes, reason)
     target = tonumber(target)
     adminSrc = tonumber(adminSrc) or 0
@@ -692,8 +711,9 @@ local function jailPlayer(target, adminSrc, minutes, reason)
         return
     end
 
-    if reason == '' then
-        notify(adminSrc, 'Du musst einen Grund angeben.', 'error')
+    local reasonOk, reasonError = isValidJailReason(reason)
+    if not reasonOk then
+        notify(adminSrc, reasonError, 'error')
         return
     end
 
@@ -750,7 +770,7 @@ local function jailPlayer(target, adminSrc, minutes, reason)
                 disableCombatControls = Config.DisableCombatControls
             })
 
-            notify(target, ('Du wurdest von einem Admin eingesperrt. Grund: %s | Zeit: %s Minuten'):format(reason, minutes), 'error')
+            notify(target, ('Du wurdest eingesperrt. Restzeit: %s Minuten'):format(minutes), 'error')
             notify(adminSrc, ('Spieler %s wurde erfolgreich eingesperrt.'):format(playerName), 'success')
 
             webhook('jail', {

@@ -1124,39 +1124,26 @@ body.hud-visible .hud { display: block; }
 
 .hud-meta {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
-    gap: 12px;
-    margin-top: 10px;
+    margin-top: 8px;
+    max-width: 100%;
 }
 
 .hud-meta-item {
-    flex: 1 1 0;
-    min-width: 0;
-    font-size: 12.5px;
+    font-size: 11.5px;
     color: rgba(233, 237, 244, 0.7);
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    max-width: 100%;
 }
 
 .hud-meta-item span { color: #e9edf4; font-weight: 600; }
 
-.hud-meta-divider {
-    width: 1px;
-    align-self: stretch;
-    background: rgba(255, 255, 255, 0.14);
-    flex: none;
-}
-
-@media (max-width: 520px) {
-    .hud-meta {
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .hud-meta-divider { display: none; }
+@media (max-width: 360px) {
+    .hud-meta-item { font-size: 11px; }
 }
 
 /* ---------- Responsive ---------- */
@@ -1328,7 +1315,7 @@ body.hud-visible .hud { display: block; }
 
                                         <label class="field">
                                             <span class="field-label">Grund <em>· Pflichtfeld</em></span>
-                                            <textarea id="jailReason" class="input textarea" maxlength="250" rows="3" placeholder="Grund für die Strafe eingeben ..."></textarea>
+                                            <textarea id="jailReason" class="input textarea" maxlength="250" rows="3" placeholder="Grund für die Strafe eingeben ..." autocomplete="off"></textarea>
                                             <span id="reasonCount" class="field-hint">0 / 250</span>
                                         </label>
                                     </div>
@@ -1420,8 +1407,6 @@ body.hud-visible .hud { display: block; }
             <div class="hud-progress"><i id="hudProgress"></i></div>
             <div class="hud-meta">
                 <div class="hud-meta-item">Teamler: <span id="hudAdmin">–</span></div>
-                <span class="hud-meta-divider" aria-hidden="true"></span>
-                <div class="hud-meta-item">Grund: <span id="hudReason">–</span></div>
             </div>
         </div>
     </section>

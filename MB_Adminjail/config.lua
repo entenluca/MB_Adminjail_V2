@@ -29,6 +29,8 @@ Config.JailRadius = 65.0
 
 -- Jail behavior
 Config.MaxJailTime = 1440 -- minutes
+Config.MinJailReasonLength = 5
+Config.BlockedJailReasons = { 'test', 'tets', 'xxx', '123', '-', 'abc' }
 Config.RemoveWeapons = true
 Config.ForceLeaveVehicle = true
 Config.FreezePlayer = false -- true = player cannot move; false = may move inside Config.JailRadius

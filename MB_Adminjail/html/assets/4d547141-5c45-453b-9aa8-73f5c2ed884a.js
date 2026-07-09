@@ -208,6 +208,21 @@ function updateReasonCount() {
     els.reasonCount.textContent = `${els.jailReason.value.length} / 250`;
 }
 
+const BLOCKED_JAIL_REASONS = new Set(['test', 'tets', 'xxx', '123', '-', 'abc']);
+const MIN_JAIL_REASON_LENGTH = 5;
+
+function isValidJailReason(reason) {
+    const value = String(reason || '').trim();
+    if (!value) return 'Du musst einen Grund angeben.';
+    if (value.length < MIN_JAIL_REASON_LENGTH) {
+        return `Der Grund muss mindestens ${MIN_JAIL_REASON_LENGTH} Zeichen haben.`;
+    }
+    if (BLOCKED_JAIL_REASONS.has(value.toLowerCase())) {
+        return 'Bitte gib einen echten Grund an (kein Test-Text).';
+    }
+    return null;
+}
+
 function submitJail() {
     const player = state.selectedPlayer;
     const minutes = Math.floor(Number(els.jailMinutes.value));
@@ -223,8 +238,10 @@ function submitJail() {
         els.jailMinutes.focus();
         return;
     }
-    if (!reason) {
-        toast('Der Grund ist ein Pflichtfeld.', 'error');
+
+    const reasonError = isValidJailReason(reason);
+    if (reasonError) {
+        toast(reasonError, 'error');
         els.jailReason.focus();
         return;
     }
@@ -400,8 +417,7 @@ function updateHud(data = {}) {
     const progress = Math.max(0, Math.min(100, (timeLeft / originalTime) * 100));
 
     els.hudTime.textContent = formatClock(timeLeft);
-    els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 18);
-    els.hudReason.textContent = String(data.reason || 'Kein Grund').slice(0, 18);
+    els.hudAdmin.textContent = String(data.jailedBy || 'Unbekannt').slice(0, 24);
     els.hudProgress.style.width = `${progress}%`;
 }
 
@@ -562,7 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'activeFilter', 'activeList', 'activeMeta',
         'logsFilter', 'logsList', 'logsMeta',
         'modal', 'modalText', 'modalCancel', 'modalConfirm',
-        'hud', 'hudTime', 'hudAdmin', 'hudReason', 'hudProgress'
+        'hud', 'hudTime', 'hudAdmin', 'hudProgress'
     ].forEach((id) => { els[id] = $(id); });
 
     loadTheme();
